@@ -7,6 +7,12 @@
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 
+\usepackage{color}
+\usepackage{listings}
+\lstset{ %
+language=Prolog,                % choose the language of the code
+breaklines=true,        % sets automatic line breaking
+}
 
 % items enclosed in square brackets are optional; explanation below
 \title{El lenguaje de programación Prolog}
@@ -21,6 +27,7 @@ Axel Straminsky}
 }
 \date{9 de Mayo, 2011}
 
+\newtheorem{codigo}{Código}
 
 \begin{document}
 
@@ -40,7 +47,6 @@ Axel Straminsky}
 
 \end{frame}
 
-
 \begin{frame}{Historia}
 
 \begin{itemize}
@@ -51,5 +57,91 @@ Axel Straminsky}
 \end{itemize}
 
 \end{frame}
+
+\begin{frame}{Paradigma Declarativo}
+ 
+\begin{itemize}
+ \item El paradigma Lógico, al igual que el Funcional, provienen del paradigma Declarativo.
+ \item La programación declarativa permite abstraerse del “cómo” y concentrarse en el “qué” a la hora de escribir programas.
+ \item Programar de esta manera tiende a reducir errores(en comparación con la programación imperativa), ya que evita posibles ``efectos colaterales'' que pueda generar el tener que codificar un algoritmo de forma explícita.
+ \item Ideal para implementar Computación Paralela
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Paradigma Lógico}
+
+\begin{itemize}
+\item Puramente declarativo, es decir, no tiene estructuras de control.
+\item La lógica matemática es la manera más sencilla de expresar formalmente problemas complejos para el intelecto humano.
+\item Las resonsabilidades para la ejecución de una tarea están divididas entre el programador, que debe asegurar que el modelo sea lógicamente coherente, y la máquina, que debe resolver el problema de manera eficiente.
+\end{itemize}
+
+Los lenguajes lógicos usan sobretodo para las siguientes aplicaciones:
+
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+  \begin{itemize}
+    \item Inteligencia Artificial
+    \item Demostración automática de Teoremas
+  \end{itemize}
+  \end{column}
+
+  \begin{column}{0.45\textwidth}
+  \begin{itemize}
+    \item Sistemas expertos
+    \item Reconocimiento de Lenguaje Natural
+  \end{itemize}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+
+blablabla
+\end{frame}
+
+
+\begin{frame}[fragile]{Ejemplo: Factorial}
+ 
+Para la codificación de funciones hay que tener en cuenta que:
+
+\begin{enumerate}
+ \item No hay flujos de control.
+ \item Las funciones son recursivas, el algorimo de control lo hace la máquina subyacente.
+ \item Se usan los hechos como condición de corte. 
+\end{enumerate}
+
+Veamos una ejemplo:
+\begin{codigo}[Factorial]
+\begin{lstlisting}
+factorial(0, 1).
+factorial(N, F) :- N>0, N1 is N - 1, factorial(N1, F1), F is N*F1.
+\end{lstlisting}
+
+\end{codigo}
+
+
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]{Implementaciones del Lenguaje}
+
+Algunas implementaciones de Prolog son:
+
+\begin{itemize}
+\item \verb SWI-Prolog : soporta Mulithreating.
+\item \verb Mercury : Mezcla de Programación Lógica y Funcional.
+\item \verb Fprolog : Añade lógica difusa.
+\item \verb Prolog++ : Añade Clases y jerarquías de Clases.
+\item \verb LogTalk : Añade \textit{POO}.
+\item \verb Aprolog : Soporta Polimorfismo y Programación de Alto Nivel.
+\end{itemize}
+
+\end{frame}
+
+
 
 \end{document}
