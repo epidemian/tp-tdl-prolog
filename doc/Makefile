@@ -12,7 +12,7 @@ ifdef quiet
 texflags += > /dev/null
 endif 
 
-.PHONY = all clean
+.PHONY = all clean veryclean
 
 all : informe.pdf
 
@@ -21,4 +21,6 @@ informe.pdf : informe.tex $(sourcefiles)
 	
 clean :
 	@rm -vf *.aux *.toc *.log *.nav *.out *.snm *.vrb
+
+veryclean: clean
 	@rm -vf informe.pdf
