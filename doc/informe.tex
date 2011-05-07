@@ -2,15 +2,18 @@
 \usecolortheme[named=Brown]{structure} 
 \usetheme[height=7mm]{Rochester} 
 
+\setbeamertemplate{items}[default] 
+
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
+
 
 % items enclosed in square brackets are optional; explanation below
 \title{El lenguaje de programación Prolog}
 \subtitle{Presentación para la materia Teoría del Lenguaje}
 \author{
-Demian Ferrerio\\
-Martín Paulucci\\
+Demian Ferrerio \\
+Martín Paulucci \\
 Axel Straminsky}
 \institute[UMBC]{
   Facultad de Ingeniería\\
@@ -26,39 +29,26 @@ Axel Straminsky}
   \titlepage
 \end{frame}
 
-\begin{frame}{A sample slide}
+\begin{frame}{Visión General}
 
-\begin{theorem}[The Poincar\'e inequality]
-Suppose $\Omega\in\mathbf{R}^n$ is a bounded domain with smooth
-boundary.  Then there exists a $\lambda>0$, depending only on
-$\Omega$, such that for any function $f$ in the Sobolev space
-$H^1_0(\Omega)$ we have:
+\begin{itemize}
+\item Es el lenguaje más famoso del Paradigma Lógico
+\item Un programa Prolog consiste en un conjunto de sentencias, que pueden ser hechos o condiciones.
+\item Es conversacional. La interacción con el programa consiste en hacerle preguntas al sistema.
+\item Muy usado en Inteligencia Artificial y procesamiento de Lenguajes Naturales.
+\end{itemize}
 
-\[
-  \int_\Omega |\nabla u|^2 \,dx \ge 
-  \lambda \int_\Omega |u|^2 \,dx .
-\]
-\end{theorem}
+\end{frame}
 
-Here is what \emph{itemized} and \emph{enumerated} lists look like:
 
-\begin{columns}
-  \begin{column}{0.45\textwidth}
-  \begin{itemize}
-    \item itemized item 1
-    \item itemized item 2
-    \item itemized item 3
-  \end{itemize}
-  \end{column}
+\begin{frame}{Historia}
 
-  \begin{column}{0.45\textwidth}
-  \begin{enumerate}
-    \item enumerated item 1
-    \item enumerated item 2
-    \item enumerated item 3
-  \end{enumerate}
-  \end{column}
-\end{columns}
+\begin{itemize}
+\item Su nombre proviene de la abreviación \textit{PROgramming in LOGic}.
+\item Fue ideado a principios de los '70 por Colmerauer y Roussel.
+\item Nació de un proyecto que no tenía como objetivo la implementación de un lenguaje de programación, sino el procesamiento de lenguajes naturales.
+\item Inicialmente interpretado,  hasta que en 1983 se desarrollo un compilador capaz de traducir Prolog a un conjunto de instrucciones de una máquina abstracta denominada Warren Abstract Machine (WAM), y desde entonces Prolog es semi-interpretado.
+\end{itemize}
 
 \end{frame}
 
