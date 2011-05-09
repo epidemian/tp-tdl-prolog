@@ -1,8 +1,8 @@
 
-member(X,[X|R]).
-member(X,[Y|R]) :- member(X,R).
+member(X,[X|_]).
+member(X,[_|R]) :- member(X,R).
 
-stock(X) :- member(X,[1,2,3,4,5,6,7,8,9,10]).
+stock(X) :- member(X,[0,1,2,3,4,5,6,7,8,9,10]).
 billetes(X) :- member(X,[2,5,10,20,50,100]).
 
 cambio(Billete,Peso,Cincuenta,Veinticinco,Diez,Cinco) :-

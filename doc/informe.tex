@@ -3,6 +3,7 @@
 \usetheme[height=7mm]{Rochester} 
 
 \setbeamertemplate{items}[default] 
+\setbeamertemplate{itemize subitem}[circle] % if you wnat a circle
 
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
@@ -77,7 +78,7 @@ Axel Straminsky}
 \item Puramente declarativo, es decir, no tiene estructuras de control.
 \item La lógica matemática es la manera más sencilla de expresar formalmente problemas complejos para el intelecto humano.
 \item Las resonsabilidades para la ejecución de una tarea están divididas entre el programador, que debe asegurar que el modelo sea lógicamente coherente, y la máquina, que debe resolver el problema de manera eficiente.
-\end{itemize}
+
 
 Los lenguajes lógicos usan sobretodo para las siguientes aplicaciones:
 
@@ -96,6 +97,8 @@ Los lenguajes lógicos usan sobretodo para las siguientes aplicaciones:
   \end{itemize}
   \end{column}
 \end{columns}
+
+\end{itemize}
 
 \end{frame}
 
@@ -137,18 +140,18 @@ hija (A, B) :- mujer (A), madre (B, A).
 \end{frame}
 
 
-t\begin{frame}[fragile]{Ejemplo: Factorial}
+\begin{frame}[fragile]{Ejemplo: Factorial}
  
-Para la codificación de funciones hay que tener en cuenta que:
-
-\begin{enumerate}
- \item No hay flujos de control.
- \item Las funciones son recursivas, el algorimo de control lo hace la máquina subyacente.
- \item Se usan los hechos como condición de corte. 
-\end{enumerate}
-
-Veamos un ejemplo:
+\begin{itemize}
+ \item En Prolog no existen instrucciones de control, y su ejecución se basa en 2 conceptos: \textit{unificación} y \textit{backtracking}. 
+ \item La unificación produce una ligadura entre 2 términos lógicos que están relacionados mediante una igualdad.
+ \item Veamos un ejemplo:
 \lstinputlisting{../src/factorial.pl}
+\begin{itemize}
+ \item El flujo de control se genera utilizando recursividad.
+ \item Se usa como función de corte a los hechos. 
+\end{itemize}
+\end{itemize}
 
 
 
