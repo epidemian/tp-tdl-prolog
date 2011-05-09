@@ -6,7 +6,7 @@ sourcefiles  = $(shell find ../src -name '*\.pl')
 texflags = -interaction=nonstopmode
 
 # Uncomment to supress the fu***** pdflatex command.
-quiet = yes
+#quiet = yes
 
 ifdef quiet
 texflags += > /dev/null
