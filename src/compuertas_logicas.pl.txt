@@ -1,0 +1,9 @@
+buffer(Entrada) :- Entrada.
+
+compuerta_and(Entrada1,Entrada2) :- buffer(Entrada1),buffer(Entrada2).
+
+compuerta_nand(Entrada1,Entrada2) :- not(compuerta_and(Entrada1,Entrada2)).  
+
+compuerta_or(Entrada1,Entrada2) :- buffer(Entrada1);buffer(Entrada2).
+
+compuerta_nor(Entrada1,Entrada2) :- not(compuerta_or(Entrada1,Entrada2)).
