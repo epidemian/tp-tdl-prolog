@@ -87,7 +87,7 @@ Martín Paulucci
 \item Las resonsabilidades para la ejecución de una tarea están divididas entre el programador, que debe asegurar que el modelo sea lógicamente coherente, y la máquina, que debe resolver el problema de manera eficiente.
 
 
-Los lenguajes lógicos usan sobretodo para las siguientes aplicaciones:
+Los lenguajes lógicos usan sobre todo para las siguientes aplicaciones:
 
 \begin{columns}
   \begin{column}{0.45\textwidth}
@@ -166,7 +166,7 @@ hija(A, B) :- mujer(A), madre(B, A).
 \begin{frame}[fragile]{Programación en Prolog: Queries}
     Las queries son la forma de obtener información del programa.
     \begin{itemize}
-        \item Si se especifican todos los parámetros de una consulta con constantes, el intérprete informa si el predicado se cumple.
+        \item Si se especifican todos los parámetros de una consulta con constantes, el intérprete informa si el predicado se cumple o no.
         \begin{lstlisting}
 ?- factorial(5, 120).
 true .
@@ -221,13 +221,34 @@ true .
     \begin{figure}[H]
 		\centering
 		\includegraphics[height=175pt]{factorial.png}
-	\end{figure}	
+	\end{figure}
 
-    
 \end{frame}
 
+\begin{frame}[fragile]{Ejemplos interesantes}
+Ver ejemplos \verb|cambio.pl| y \verb|n_reinas.pl|.
+\end{frame}
 
+\begin{frame}[fragile]{Desventajas de Prolog}
+    \begin{itemize}
+        \item Prolog no es un lenguaje de proposito general.
+        \item No tiene un sistema de módulos, lo cual hace que sea poco escalable.
+        \item No hay un estandard bien definido
+        \begin{itemize}
+            \item Incompatibilidades entre distintas implementaciones.
+        \end{itemize}
+        \item Baja performance en comparación con otros lenguajes.
+        \begin{itemize}
+            \item Poco apropiado para programas computacionalmente complejos.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
 
+\begin{frame}[fragile]{Fin}
+    Preguntas \\
+    \pause
+    Muchas gracias!
+\end{frame}
 
 
 \end{document}
