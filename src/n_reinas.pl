@@ -1,5 +1,6 @@
-generar(0, []) :- !.
-generar(N, [N|L]) :- N1 is N - 1, generar(N1, L).
+generar(N, Sec) :- generar(N, [], Sec).
+generar(0, Acum, Acum) :- !.
+generar(N, Acum, Sec) :- N1 is N - 1, generar(N1, [N|Acum], Sec).
 
 reina_no_choca(Col, Cols) :- reina_no_choca(Col, 1, Cols).
 reina_no_choca(_,_,[]).
