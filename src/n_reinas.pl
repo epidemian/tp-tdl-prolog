@@ -25,10 +25,9 @@ solucion(N, Tablero) :- generar(N, Inicial), permutacion(Inicial, Tablero), tabl
 % Código fiero para imprimir el tablero.
 imprimir_tablero(_,[]).
 imprimir_tablero(N, [Col|Cols]) :- imprimir_fila(N, Col), nl, imprimir_tablero(N, Cols).
-imprimir_fila(N, Col_reina) :- imprimir_fila(N, 1, Col_reina).
-imprimir_fila(N, Col,_) :- Col > N, !.
-imprimir_fila(N, Col, Col_reina) :- imprimir_casillero(Col, Col_reina), Col1 is Col + 1, imprimir_fila(N, Col1, Col_reina).
-imprimir_casillero(Col_reina, Col_reina) :- !,print('R').
-imprimir_casillero(_, _) :- print('-').
+imprimir_fila(0,_) :- !.
+imprimir_fila(N, Col_reina) :- imprimir_casillero(Col_reina), N1 is N - 1, Col_reina1 is Col_reina - 1, imprimir_fila(N1, Col_reina1).
+imprimir_casillero(1) :- !,print('R').
+imprimir_casillero(_) :- print('-').
 
 imprimir_solucion(N) :- solucion(N, T), imprimir_tablero(N, T), nl.
