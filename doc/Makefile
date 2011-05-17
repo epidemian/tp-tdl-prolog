@@ -14,13 +14,16 @@ endif
 
 .PHONY = all clean veryclean
 
-all : informe.pdf
+all : informe.pdf presentacion.pdf
 
 informe.pdf : informe.tex $(sourcefiles)
 	pdflatex $(texflags) informe.tex
+	
+presentacion.pdf : presentacion.tex $(sourcefiles)
+	pdflatex $(texflags) presentacion.tex
 	
 clean :
 	@rm -vf *.aux *.toc *.log *.nav *.out *.snm *.vrb
 
 veryclean: clean
-	@rm -vf informe.pdf
+	@rm -vf informe.pdf presentacion.pdf
