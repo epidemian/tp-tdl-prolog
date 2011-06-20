@@ -165,7 +165,7 @@ El conjunto de las formulas se define inductivamente como: \\
 \begin{itemize}
     \item Simbolos de predicado: si $P$ es un simbolo de predicado n-ario y $t1,\cdots,tn$ son terminos, entonces $P(t1,\cdots,tn)$ es una formula.
     \item Igualdad: si $t1$ y $t2$ son términos, entonces $t1=t2$ es una formula.
-    \item Negación: si $P$ es una formula, entonces $¬P$ es una formula. % TODO Corregir
+    \item Negación: si $P$ es una formula, entonces $P$ es una formula. % TODO Corregir
     \item Conectivos Binarios: si $P$ y $Q$ son formulas, entonces $P \rightarrow Q$ es una formula. % TODO Corregir
     \item Cuantificadores: si $P$ es una formula y $x$ una variable, entonces $(para todo x)P$ y $(existe algun x)P$ son formulas. % TODO Corregir
 \end{itemize}
@@ -202,48 +202,7 @@ Otros casos en donde se utiliza este paradigma son: \\
 \end{itemize}
 
 \section{Programas lógicos}
-
-La estructura básica de un programa lógico son los términos. Un término puede ser una constante, una variable, o un término compuesto. \\
-
-Las constantes denotan individuos particulares como enteros o átomos, mientras que las variables denotan a un único individuo no especificado. \\
-
-Un término compuesto comprende un functor y una secuencia de uno o más términos llamados argumentos. Ejemplo:
-\begin{lstlisting}
-padre(sergio, leandro).
-\end{lstlisting}
-
-Functor: padre \\
-argumentos: sergio, leandro. \\
-
-Los functores y las constantes empiezan con minúsculas, las variables con mayúsculas. \\
-
-Los functores se caracterizan por su nombre (que es un átomo), y su aridad (número de argumentos). Las constantes, por ejemplo, son functores de aridad cero. Los functores establecen una relación entre sus argumentos, por lo cual se los llama también predicados. \\
-
-Un programa lógico es un conjunto finito de clausulas. Una cláusula o regla es una sentencia lógica universalmente cuantificada, de la forma: \\
-
-A <--- B_1, B_2,..., B_n    n >= 0    (en Prolog se usa :- en vez de <---- )
-
-Esta sentencia se lee declarativamente: “A se implica de conjunción de los B_i”. A se llama la cabeza de la clausula y la conjunción de los B_i el cuerpo de la clausula.
-Si n = 0, la clausula se conoce como un hecho (fact o clausula unitaria) y se escribe A.
-
-Las clausulas de Prolog están basadas en las cláusulas de Horn, que son reglas del tipo Modus Ponens, es decir, si es verdad el antecedente, entonces es verdad el consecuente (en Prolog se escribe primero el consecuente y luego el/los antecedentes).
-
-En lógica las cláusulas de Horn se escribirían así:
-
-(mujer(A) ^ padre(B,A)) ---> hija(A,B).
-
-
-En Prolog no existe el concepto de asignación de variables, sino el de unificación. No hay un “estado” de las variables que se vaya modificando por sucesivas asignaciones, generalmente asociadas a posiciones de memoria, sino que las variables asumen valores al unificarse o “ligarse” con valores particulares temporalmente y se van sustituyendo durante la ejecución del programa. Cuando una variable no tiene ningún valor, se dice que está libre. A la unificación se le llama también Pattern Matching.
-Las variables en Prolog son similares a las variables matemáticas. 
-
-
-
-Un programa lógico contiene una base de conocimiento sobre la que se hacen consultas. La base de conocimiento está formada por hechos, que representan la información del sistema expresada como relaciones entre datos, y por reglas lógicas que permiten deducir consecuencias a partir de combinaciones entre los hechos y, en general, otras reglas. 
-Se construye especificando la información del problema real en una base de conocimiento en un lenguaje formal y el problema se resuelve mediante un mecanismo de inferencia que actúa sobre ella. Así pues, una clave de la programación lógica es poder expresar apropiadamente todos los hechos y reglas necesarios que definen el dominio de un problema. 
-
-Internamente, existe un mecanismo, un “motor”, que actúa como control de secuencia. Durante la ejecución de un programa va evaluando y combinando las reglas lógicas de la base de conocimiento para lograr los resultados esperados. La implementación del mecanismo de evaluación puede ser diferente en cada lenguaje del paradigma, pero en todos los casos debe garantizar que se agoten todas las combinaciones lógicas posibles para ofrecer el conjunto completo de respuestas alternativas posibles a cada consulta efectuada. El más difundido se denomina backtracking, que utiliza una estrategia de búsqueda primero en profundidad (Backtracking es un algoritmo para encontrar todas (o algunas) de las soluciones de un cierto problema computacional, que construye incrementalmente candidatos para la solución, mientras descartando los candidatos parciales que descubre no sirven para alcanzar la solución global).
-
-
+bla
 
 \section{Conclusión}
 Acá va la conclusión... \\
