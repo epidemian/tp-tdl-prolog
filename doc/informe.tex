@@ -1,5 +1,5 @@
 % Tamaño de letra.
-\documentclass[12pt,titlepage]{report}
+\documentclass[12pt,titlepage]{article}
 
 %------------------------------ Paquetes ----------------------------------
 
@@ -65,7 +65,7 @@
 
 % -------------------------- Título y autor(es) ---------------------------
 
-\title{Prolog Hello}
+\title{Prolog}
 \author{}
 
 % -------------------------- ~Título y autor(es) --------------------------
@@ -103,7 +103,7 @@
 \begin{tabular}{lll}
 Axel Straminsky & XXXXX & axel\_stram@hotmail.com \\
 Demian Ferrerio & 88443 & epidemian@gmail.com \\
-Martín Paulucci & XXXXX & martin.c.paulucci@gmail.com \\
+Martín Paulucci & 88509 & martin.c.paulucci@gmail.com \\
 \end{tabular}
 \end{flushleft}
 
@@ -147,6 +147,8 @@ Este paradigma tiene como característica principal la aplicación de las \emph{
 
 Un programa lógico no tiene un algoritmo que indique los pasos que detallen la manera de llegar a un resultado, sino que está formado por expresiones que describen la solución (o más precisamente, la \emph{declaran}). De esta manera, la clave para hacer un programa lógico es poder explicitar una declaración que describa correctamente la solución del problema. \\
 
+\newpage
+
 \section{Lógica de Primer Orden}
 
 La lógica de primer orden es un sistema de lógica formal usado en distintas disciplinas, como la matemática y la computación. La lógica de primer orden se distingue de la lógica proposicional por su uso de \emph{cuantificadores} (``para todo'' o ``existe''). \\
@@ -172,9 +174,13 @@ El conjunto de las formulas se define inductivamente como: \\
     \item Cuantificadores: si $P$ es una formula y $x$ una variable, entonces $(para todo x)P$ y $(existe algun x)P$ son formulas. % TODO Corregir
 \end{itemize}
 
+\newpage
+
 \section{Warren Abstract Machine (WAM)}
 
 La WAM es una máquina abstracta diseñada para ejecutar Prolog, consistente de una arquitectura de memoria y de un conjunto de instrucciones. Este diseño se convirtió en el standard de facto para la construcción de compiladores Prolog. \\
+
+\newpage
 
 \section{Aplicaciones del Paradigma Lógico}
 
@@ -192,6 +198,8 @@ Otros casos en donde se utiliza este paradigma son: \\
 \end{itemize}
 
 % TODO No serían "variantes de Prolog" o algo así?
+\newpage
+
 \section{Implementaciones del Paradigma Lógico}
 
 \begin{itemize}
@@ -203,9 +211,11 @@ Otros casos en donde se utiliza este paradigma son: \\
     \item $\lambda$prolog: soporta polimorfismo y programación de alto orden.
 \end{itemize}
 
+\newpage
 \section{Programas lógicos}
 bla
 
+\newpage
 \section{Conclusión}
 Acá va la conclusión... \\
 Así se hace una cita \cite{artofprolog}.
