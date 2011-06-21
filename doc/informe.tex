@@ -31,6 +31,7 @@
 \usepackage{listings}
 \lstset{ 
     language=Prolog,            
+    basicstyle=\fontfamily{pcr}\small,
     breaklines=true,            % Wrappea las lineas automáticamente.
     frame=single               % Un recuadro en los listings.
 }
@@ -84,11 +85,14 @@
 % Título central.
 
 \textsc{\large Teoría de Lenguajes (75.31)} \\[0.3cm]
-\textsc{\large Trabajo Práctico}
+\textsc{\large Trabajo Práctico} \\[0.5cm]
 
 \rule{\linewidth}{0.5mm} \\[0.4cm]
-{\huge \bfseries Prolog} \\
-\rule{\linewidth}{0.5mm}
+{\huge \bfseries Prolog} \\[0.3cm]
+{\Large \bfseries Introducción al lenguaje y a la programación lógica}
+\rule{\linewidth}{0.5mm} 
+
+\vfill
 
 % Tabla de integrantes.
 \begin{flushleft}
@@ -103,10 +107,8 @@ Martín Paulucci & XXXXX & martin.c.paulucci@gmail.com \\
 \end{tabular}
 \end{flushleft}
 
-\vfill
-
 % Pie de página de la carátula.
-{\large \today}
+{\Large \today}
 
 \end{center}
 \end{titlepage}
@@ -138,7 +140,7 @@ Uno de los objetivo al crear este lenguaje fue el de poder crear programas que s
 
 Inicialmente era un lenguaje interpretado, hasta que en 1983 se desarrollo un compilador capaz de traducir Prolog a un conjunto de instrucciones de una máquina abstracta denominada Warren Abstract Machine (WAM), y desde entonces Prolog es semi-interpretado. \\
 
-\section{Paradigma}
+\section{Programación Lógica}
 La programación lógica es un paradigma de programación dentro del paradigma de programación declarativa, y permite abstraerse del ``cómo'' y concentrarse en el ``qué'' a la hora de escribir programas. Particularmente Prolog implementa un tipo particular de lógica que es la lógica de primer orden. \\
 
 Este paradigma tiene como característica principal la aplicación de las \emph{reglas de la lógica} para inferir conclusiones a partir de datos. Conociendo la información y las condiciones del problema, la ejecución de un programa consiste en la búsqueda de un objetivo dentro de las declaraciones realizadas. Esta forma de tratamiento de la información permite pensar la existencia de \emph{``programas inteligentes''} que puedan responder, no por tener en la base de datos todos los conocimientos, sino por poder inferirlos a través de la deducción.  \\
