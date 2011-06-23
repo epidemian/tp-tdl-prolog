@@ -18,6 +18,7 @@ all : informe.pdf presentacion.pdf
 
 informe.pdf : informe.tex $(sourcefiles)
 	pdflatex $(texflags) informe.tex
+	pdflatex $(texflags) informe.tex
 	
 presentacion.pdf : presentacion.tex $(sourcefiles)
 	pdflatex $(texflags) presentacion.tex

@@ -20,6 +20,13 @@
 % Tamaño de página y márgenes.
 \usepackage[a4paper,headheight=16pt,scale={0.75,0.8},hoffset=0.5cm]{geometry}
 
+% Para \href y \url
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+linkcolor=black,
+pdfborder= 0 0 0
+}
 
 % Gráficos:
 
@@ -130,7 +137,56 @@ Martín Paulucci & 88509 & martin.c.paulucci@gmail.com \\
 
 \clearpage	
 
-% TODO Hay que separar mejor las secciones (o agruparlas de laguna forma)
+% Cosas Nuevas -----------------------------------------------------------------
+
+% Nota de traducción: statement = proposición
+
+\section{Paradigma Lógico}
+\subsection{Introducción}
+
+El paradigma de la programación lógica surge de la necesidad de expresar formalmente los objetivos de un sistema, así como los conocimientos y las suposiciones acerca del mismo, a la hora de programar. La lógica provee las bases para deducir consecuencias a partir de premisas, para verificar o falsificar una proposición a partir de otras y para verificar la valiz de de un argumento lógico.
+
+Si bien el propósito de las computadoras es ser usadas por personas, la dificultad de su construcción fue tan grande que los lenguajes utilizados para expresar los problemas que estas debían resolver fueron diseñados desde la perspectiva del funcionamiento de la computadora en sí.
+
+Las computadoras modernas están basadas en la arquitectura de von Neumann \cite{vonneumann}, el la cual un programa consiste en una serie de instrucciones que operan sobre registros y que se ejecutan una tras otra, pudiendo la ejecución de una instrucción influir en qué ejecución se ejecute a continuación.
+
+
+
+\subsection{Declaratividad}
+\subsection{Introducción a la Lógica: Cláusulas de Horn y Lógica de Primer Orden}
+
+\section{Historia de Prolog}
+
+\section{Actualidad}
+\subsection{Usos}
+\subsection{Implementaciones}
+
+\section{Programación en Prolog}
+\subsection{Hechos}
+\subsection{Átomos y Predicados}
+\subsection{Variables}
+\subsection{Reglas}
+\subsection{Consultas (Queries)}
+\subsection{Tipos de datos}
+\subsubsection{Simples}
+\subsubsection{Listas}
+\subsection{Recursividad}
+(ejemplo ancestro)
+
+\section{Modelo de ejecución de Prolog}
+\subsection{Algoritmo de backtracking}
+\subsection{Seguimiento de factorial}
+    Algún otro ejemplo? (el de ancestro es copado para hacer un seguimiento =P)
+
+\section{Ejemplos complejos}
+\subsection{Cambio}
+\subsection{N Reinas}
+
+\section{Conclusiones}
+
+
+% Cosas Viejas -----------------------------------------------------------------
+
 \section{Hisotria}
 Prolog es un lenguaje de programación lógico ideado en los '70 por Colmerauer y Roussel. \\
 
@@ -222,7 +278,8 @@ Así se hace una cita \cite{artofprolog}.
 	
 \clearpage
 \begin{thebibliography}{9}
-  \bibitem{artofprolog} Leon Sterling \& Ehud Shapiro, \emph{The Art of Prolog: Advanced Programming Techniques}. The MIT Press, 2nd Edition, 1999.
+    \bibitem{vonneumann} \emph{Von Neumann Architecture}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Von\_Neumann\_architecture}
+    \bibitem{artofprolog} Leon Sterling \& Ehud Shapiro, \emph{The Art of Prolog: Advanced Programming Techniques}. The MIT Press, 2nd Edition, 1999.
 \end{thebibliography}
 
 % ------------------------------ Fin del tp -------------------------------
