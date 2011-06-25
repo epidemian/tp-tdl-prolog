@@ -261,7 +261,32 @@ Las implementaciones más conocidas son:
 \newpage
 \section{Programación en Prolog}
 \subsection{Hechos}
+
+El tipo de cláusula más simple en Prolog es el \emph{hecho}. Respresenta una verdad en un programa. Por ejemplo.
+\begin{lstlisting}
+varon(pedro).
+\end{lstlisting}
+Puede interpretarse como ``Perdro es un varon''.
+
+Los hechos sirven para definir relaciones entre elementos. Por ejemplo:
+\begin{lstlisting}
+padre(zeus, apolo).
+\end{lstlisting}
+Que puede interpretarse como: la relación \lstinline|padre| se cumple para los elementos \lstinline|zeus| y \lstinline|apolo|. El término utilizado en Prolog para referirse a las relaciones es \emph{predicado} y para los elementos individuales \emph{átomo} (ver sección \ref{atomos}).
+
+Los hechos son especialmente útiles para representar relaciones entre un conjunto de elementos finitos, lo cual puede interpretarse como una forma de \emph{base de datos}. Por ejemplo:
+\begin{lstlisting}[label=lst:diosesgriegos]
+padre(urano, cronos).
+padre(cronos, hades).
+padre(cronos, poseidon).
+padre(cronos, zeus).
+padre(zeus, apolo).
+padre(zeus, artemisa).
+\end{lstlisting}
+
 \subsection{Átomos y Predicados}
+\label{atomos}
+
 \subsection{Variables}
 \subsection{Reglas}
 \label{sec:reglas}
