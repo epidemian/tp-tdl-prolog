@@ -1,6 +1,6 @@
 % Tamaño de letra.
-%\documentclass[12pt,titlepage]{article}
-\documentclass{article}
+\documentclass[12pt,titlepage]{article}
+%\documentclass{article}
 
 %------------------------------ Paquetes ----------------------------------
 
@@ -16,7 +16,8 @@
 \usepackage[utf8]{inputenc}
 
 % Tipografía
-%\usepackage{palatino} % Esta es genial!
+\usepackage{palatino} % Esta es genial!
+\linespread{1.05} % Palatino queda mejor con un poco más de interlineado.
 %\usepackage{times} % Times New Roman.
 
 
@@ -205,18 +206,39 @@ L& =[X_1,X_2,5|Y] \\
 
 Donde los $X_i$ representan elementos de cualquier valor en la lista solución, e $Y$ representa una lista de cualquier longitud contenida al final de la lista solución. Es decir que la solución $L=[X_1,5|Y]$,por ejemplo, podría leerse simplemente como ``una lista de al menos dos elementos cuyo segundo elemento es $5$''.
 
-\subsection{Cláusulas de Horn y Lógica de Primer Orden}
-???
+\subsection{Cláusulas de Horn}
+\label{sec:horn}
+
+En lógica, una cláusula es una disjunción de literales \cite{clausula}, por ejemplo:
+\[
+l_1 \lor \cdots \lor l_n
+\]
+
+Un cláusula de Horn es un cláusula con a lo sumo un literal positivo \cite{horn_clauses}, por ejemplo:
+\[
+\lnot b_1 \lor \cdots \lor \lnot b_n \lor h
+\]
+
+Lo cual se puede reescribir como una implicación lógica equivalentemente:
+\begin{equation} \label{eq:horn}
+(b_1 \land \cdots \land b_n) \rightarrow h
+\end{equation}
+
+La programación lógica tiene sus bases en las cláusulas de Horn gracias a su interpretación procedural formulada por Robert Kowalski, quien demostró que una clásula de Horn como \eqref{eq:horn} puede resolverse proceduramente \cite{kowalski} planteando $h$ como el encabezado (\emph{head}) de un procedimiento y $b_1 \land \cdots \land b_n$ como su cuerpo (\emph{body}). Lo cual puede leerse proceduralmente como: \emph{para resolver (ejecutar) $h$, resolver (ejecutar) $b_1$ y $b_2$ y $\cdots$ y $b_n$}. 
+
+Para remarcar esta relación entre el encabezado de la cláusula y su cuerpo, en la programción lógica suele utilizarse el operador de consecuencia lógica, cuya notación resulta más similiar a la de una \emph{regla} de Prolog (ver sección \ref{sec:reglas}):
+\begin{equation*} 
+h \leftarrow (b_1 \land \cdots \land b_n)
+\end{equation*}
 
 \newpage
 \section{Historia de Prolog}
 
-El nombre \textit{Prolog} proviene de la abreviatura \textit{PROgrammation en LOGique}. Fue creado por Alain Colmerauer juanto a Philippe Roussel en 1972 en la Universidad de Marsella, y está basado en la interpretación procedual de las llamadas Cláusulas de Horn.
+El nombre \textit{Prolog} proviene de la abreviatura \textit{PROgrammation en LOGique}. Fue creado por Alain Colmerauer juanto a Philippe Roussel en 1972 en la Universidad de Marsella, y está basado en la interpretación procedual de las Cláusulas de Horn (ver sección \ref{sec:horn}).
 
 La motivación que llevó al nacimiento de Prolog fue hacer un lenguaje que permita hacer programas que llevaran a cabo demostraciones automáticas de teoremas. Así empezaron los primeros trabajos de inteligencia artificial que más de veinte años después dieron lugar al primer lenguaje de programación que contempla, como parte del intérprete, los mecanismos de inferencia necesarios para la demostración automática. Este primer lenguaje está basado en el formalismo matemático de la Lógica de Primer Orden y ha dado inicio a un nuevo y activo campo de investigación entre las matemáticas y la computación que se ha denominado la Programación Lógica.
 
 La Programación Lógica tiene sus orígenes más cercanos en los trabajos de prueba automática de teoremas de los años sesenta. J. A. Robinson propone en 1965 una regla de inferencia a la que llama resolución, mediante la cual la demostración de un teorema puede ser llevada a cabo de manera automática. La resolución es una regla que se aplica sobre cierto tipo de fórmulas del Cálculo de Predicados de Primer Orden, llamadas cláusulas y la demostración de teoremas bajo esta regla de inferencia se lleva a cabo por reducción al absurdo. Como ya se mencionó, Prolog implementa la interpretación de estas cláusulas, lo que, gracias a su eficiencia, relega los intentos anteriores de lenguajes lógicos, y se vuelve el lenguaje lógico más popular.
-
 
 \newpage
 \section{Actualidad}
@@ -242,6 +264,8 @@ Las implementaciones más conocidas son:
 \subsection{Átomos y Predicados}
 \subsection{Variables}
 \subsection{Reglas}
+\label{sec:reglas}
+
 \subsection{Consultas (Queries)}
 \subsection{Tipos de datos}
 \subsubsection{Simples}
@@ -277,6 +301,9 @@ Veamos el código fuente del programa:
 \begin{thebibliography}{9}
     \bibitem{vonneumann} \emph{Von Neumann Architecture}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Von\_Neumann\_architecture}
     \bibitem{wiki} \emph{Prolog}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Prolog}
+    \bibitem{clausula} \emph{Clause (logic)}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Clause_(logic)}
+    \bibitem{horn_clauses} \emph{Horn Clauses}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Horn_clauses}
+    \bibitem{kowalski} Robert Kowalski, \emph{Predicate Logic as Programming Language}. IEEE Computer Society Press, 1986.
     \bibitem{hist1} \emph{Historia de Prolog}, \url{http://prolog6.tripod.com/historia.htm}
     \bibitem{artofprolog} Leon Sterling \& Ehud Shapiro, \emph{The Art of Prolog: Advanced Programming Techniques}. The MIT Press, 2nd Edition, 1999.
 \end{thebibliography}
