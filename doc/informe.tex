@@ -24,7 +24,7 @@
 \usepackage[spanish]{babel}
 
 % Tamaño de página y márgenes.
-%\usepackage[a4paper, headheight=16pt]{geometry}
+\usepackage[a4paper, headheight=16pt]{geometry}
 
 % Para \href y \url
 \usepackage{hyperref}
@@ -38,7 +38,7 @@ pdfborder= 0 0 0
 
 % Para generar pdf.
 \usepackage[pdftex]{graphicx}
-%\usepackage{pdfpages}
+\usepackage{pdfpages}
 
 % Para ejemplos de código.
 \usepackage{listings}
@@ -145,7 +145,7 @@ Martín Paulucci & 88509 & martin.c.paulucci@gmail.com \\
 \clearpage	
 
 % Saca la indentación de los párrafos y añade un espacio entre cada uno.
-\setlength{\parindent}{0pt}
+%\setlength{\parindent}{0pt}
 \setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
 
 % Cosas Nuevas -----------------------------------------------------------------
@@ -208,12 +208,22 @@ Donde los $X_i$ representan elementos de cualquier valor en la lista solución, 
 \subsection{Cláusulas de Horn y Lógica de Primer Orden}
 ???
 
+\newpage
 \section{Historia de Prolog}
 
+El nombre \textit{Prolog} proviene de la abreviatura \textit{PROgrammation en LOGique}. Fue creado por Alain Colmerauer juanto a Philippe Roussel en 1972 en la Universidad de Marsella, y está basado en la interpretación procedual de las llamadas Cláusulas de Horn.
+
+La motivación que llevó al nacimiento de Prolog fue hacer un lenguaje que permita hacer programas que llevaran a cabo demostraciones automáticas de teoremas. Así empezaron los primeros trabajos de inteligencia artificial que más de veinte años después dieron lugar al primer lenguaje de programación que contempla, como parte del intérprete, los mecanismos de inferencia necesarios para la demostración automática. Este primer lenguaje está basado en el formalismo matemático de la Lógica de Primer Orden y ha dado inicio a un nuevo y activo campo de investigación entre las matemáticas y la computación que se ha denominado la Programación Lógica.
+
+La Programación Lógica tiene sus orígenes más cercanos en los trabajos de prueba automática de teoremas de los años sesenta. J. A. Robinson propone en 1965 una regla de inferencia a la que llama resolución, mediante la cual la demostración de un teorema puede ser llevada a cabo de manera automática. La resolución es una regla que se aplica sobre cierto tipo de fórmulas del Cálculo de Predicados de Primer Orden, llamadas cláusulas y la demostración de teoremas bajo esta regla de inferencia se lleva a cabo por reducción al absurdo. Como ya se mencionó, Prolog implementa la interpretación de estas cláusulas, lo que, gracias a su eficiencia, relega los intentos anteriores de lenguajes lógicos, y se vuelve el lenguaje lógico más popular.
+
+
+\newpage
 \section{Actualidad}
 \subsection{Usos}
 \subsection{Implementaciones}
 
+\newpage
 \section{Programación en Prolog}
 \subsection{Hechos}
 \subsection{Átomos y Predicados}
@@ -226,21 +236,26 @@ Donde los $X_i$ representan elementos de cualquier valor en la lista solución, 
 \subsection{Recursividad}
 (ejemplo ancestro)
 
+\newpage
 \section{Modelo de ejecución de Prolog}
 \subsection{Algoritmo de backtracking}
 \subsection{Seguimiento de factorial}
     Algún otro ejemplo? (el de ancestro es copado para hacer un seguimiento =P)
 
+\newpage
 \section{Ejemplos complejos}
 \subsection{Cambio}
 \subsection{N Reinas}
 
+\newpage
 \section{Conclusiones}
 
 
 \clearpage
 \begin{thebibliography}{9}
     \bibitem{vonneumann} \emph{Von Neumann Architecture}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Von\_Neumann\_architecture}
+    \bibitem{wiki} \emph{Prolog}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Prolog}
+    \bibitem{hist1} \emph{Historia de Prolog}, \url{http://prolog6.tripod.com/historia.htm}
     \bibitem{artofprolog} Leon Sterling \& Ehud Shapiro, \emph{The Art of Prolog: Advanced Programming Techniques}. The MIT Press, 2nd Edition, 1999.
 \end{thebibliography}
 
