@@ -41,20 +41,25 @@ pdfborder= 0 0 0
 \usepackage[pdftex]{graphicx}
 \usepackage{pdfpages}
 
+% Sarpadísima tipografía para listings y \texttt
+\usepackage{inconsolata}
+
+\usepackage{xcolor}
+
 % Para ejemplos de código.
 \usepackage{listings}
 \lstset{ 
     language=Prolog,            
-    basicstyle=\fontfamily{pcr}\small,
-    breaklines=true,            % Wrappea las lineas automáticamente.
-    frame=single               % Un recuadro en los listings.
+    basicstyle=\ttfamily\small, % Usa inconsolata
+    backgroundcolor=\color{blue!8}, % Un color suave de fondo (menos chocante que el frame=single)
+    breaklines=true            % Wrappea las lineas automáticamente.
+    %frame=single               % Un recuadro en los listings.
 }
 
 \usepackage{amssymb,amsmath}
 
 % Son necesarios?
 %\usepackage{float}
-%\usepackage{color}
 
 %------------------------------ ~paquetes ---------------------------------
 
