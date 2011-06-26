@@ -41,6 +41,9 @@ pdfborder= 0 0 0
 \usepackage[pdftex]{graphicx}
 \usepackage{pdfpages}
 
+% Para captions.
+\usepackage{caption}
+
 % Sarpadísima tipografía para listings y \texttt
 \usepackage{inconsolata}
 
@@ -49,10 +52,16 @@ pdfborder= 0 0 0
 % Para ejemplos de código.
 \usepackage{listings}
 \lstset{ 
-    language=Prolog,            
+    language=Prolog,    
     basicstyle=\ttfamily\small, % Usa inconsolata
-    backgroundcolor=\color{blue!8}, % Un color suave de fondo (menos chocante que el frame=single)
-    breaklines=true            % Wrappea las lineas automáticamente.
+    identifierstyle=\ttfamily,
+    keywordstyle=\color[rgb]{0,0,1},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{0.627,0.126,0.941},
+    morekeywords={true,false},
+    backgroundcolor=\color{blue!10}, % Un color suave de fondo (menos chocante que el frame=single)
+    breaklines=false,            % Wrappea las lineas automáticamente.
+    belowskip=0pt               % Reduce el espacio entre un listing y el párrafo siguiente
     %frame=single               % Un recuadro en los listings.
 }
 
@@ -271,19 +280,24 @@ Las implementaciones más conocidas son:
 
 \newpage
 \section{Programación en Prolog}
+
+La elementos básicos del lenguaje derivan de la lógica: el término, que unifica todos los tipos de datos; y la proposición (\emph{statement}), que a su vez se divide en tres tipos básicos: hechos, reglas y queries.
+
+La programación Prolog es interactiva: un programa es un conjunto de hechos y reglas, que representan la información de un sistema y las relaciones entre los objetos que lo componen, y para extraer información de éste programa (ejecutarlo), se realizan consultas (queries). 
+
 \subsection{Hechos}
 
 El tipo de proposición más simple en Prolog es el \emph{hecho}. Respresenta una verdad en un programa. Por ejemplo.
 \begin{lstlisting}
-varon(pedro).
+gato(felix).
 \end{lstlisting}
-Puede interpretarse como ``Perdro es un varon''.
+Puede interpretarse como ``Felix es un gato''\footnote{El único único gato.}.
 
 Los hechos sirven para definir relaciones entre elementos. Por ejemplo:
 \begin{lstlisting}
 padre(zeus, apolo).
 \end{lstlisting}
-Que puede interpretarse como: la relación \lstinline|padre| se cumple para los elementos \lstinline|zeus| y \lstinline|apolo|. El término utilizado en Prolog para referirse a las relaciones es \emph{predicado} y para los elementos individuales \emph{átomo} (ver sección \ref{sec:datos}). Tanto predicados como átomos deben ser identificadores que comiencen con minúscula.
+Que puede interpretarse como: la relación \lstinline|padre| se cumple para los elementos \lstinline|zeus| y \lstinline|apolo|. El término utilizado en Prolog para referirse a las relaciones es \emph{predicado} y para los elementos individuales \emph{átomo} (ver Tipos de Datos \ref{sec:datos}). Tanto predicados como átomos deben ser identificadores que comiencen con minúscula.
 
 Los hechos son especialmente útiles para representar relaciones entre un conjunto de elementos finitos, lo cual puede interpretarse como una forma de \emph{base de datos}. Por ejemplo:
 \begin{lstlisting}[label=lst:diosesgriegos]
@@ -300,7 +314,8 @@ padre(zeus, artemisa).
 Otro tipo de proposición en Prolog son las consultas, o \emph{queries}, que sirven para extraer información de un programa lógico. Las queries se \emph{ejecutan} sobre un programa, es decir, se resuelven a partir de los axiomas definidos en él. En la programción lógica en general se las conoce como \emph{proposición objetivo} (\ref{sec:programaslogicos})
 
 Un ejemplo de query sobre el programa antes visto de los dioses griegos (\ref{lst:diosesgriegos}) podría ser \lstinline|padre(zeus, apolo)|, que, al ejecutarlo\footnote{Los sistemas Prolog en general proveen un ambiente interactivo para ejecutar queries sobre programas. En este trabajo práctico se utilizó la implementación de SWI Prolog.}, el sistema informa que se cumple devolviendo \emph{true}:
-\begin{lstlisting}[basicstyle=\color{green}\ttfamily\small,backgroundcolor=\color{black!70}]
+%\begin{lstlisting}[basicstyle=\color{green}\ttfamily\small,backgroundcolor=\color{black!70}]
+\begin{lstlisting}
 ?- padre(zeus, apolo).
 true.
 ?- padre(zeus, cronos).
@@ -309,11 +324,68 @@ false.
 false.
 \end{lstlisting}
 
-Se puede observar que cuando la proposición no se cumple, el resultado es \emph{false}. 
+Se puede observar que cuando la proposición no se cumple, el resultado es \emph{false}. En este caso, la sintaxis de las queries resulta idéntica a la de los hechos; la diferencia radica en que los hechos se escriben en el programa, mientras que las queries se ejecutan en el el ambiente interactivo de Prolog, el cual antepone \lstinline|?-| en cada linea para diferenciarlas de los resultados.
 
-Este es el tipo más sencillo de queries, es decir, verificar si se cumple una relación a partir de hechos. Mediante se presenten nuevas construcciones del lenguaje se mostrarán queries más complejas.
+Este es el tipo más sencillo de queries, es decir, verificar si se cumple un predicado a partir de hechos. Mediante se presenten nuevas construcciones del lenguaje se mostrarán queries más complejas.
 
 \subsection{Variables}
+
+La variable lógica es un término de valor arbitrario (i.e. no especificado). Dar una definición más precisa que esa sería engorroso y probablemente poco claro. Su uso, sin embargo, resulta claro observando algunos ejemplos de queries que utilicen variables.
+
+Volviendo al programa de los dioses griegos (\ref{lst:diosesgriegos}), con el uso de variables, se puede preguntar quién es el padre de Zeus:
+\begin{lstlisting}
+?- padre(X, zeus).
+X = cronos .
+\end{lstlisting}
+
+Puede observarse que las variables, a diferencia de los átomos, comienzan con mayúscula.
+
+Las queries con variables son en realidad predicados existenciales. En este caso, la query puede leerse como ``existe $X$ tal que $X$ es padre de Zeus''. 
+
+El resultado de una query, en general, son las substituciones de las variables que ésta utiliza tales que verifiquen la query. Una substitución es un par $\{X=a\}$ donde $X$ es una variable y $a$ es un término.
+
+Puede no existir ninguna substitución de las variables de una query que la verifiquen:
+\begin{lstlisting}
+?- padre(X, urano).
+false.
+\end{lstlisting}
+
+No existe valor de \lstinline|X| que verifique \lstinline|padre(X, urano)|, es decir, Urano es huérfano.
+
+Si una query tiene varias soluciones (i.e. varias susbtituciones que la verfican), estas se listan a medida que se resuelven\footnote{En SWI Prolog hay que ingresar \emph{n} (\emph{next}) para que se siga ejecutando la query y se busque la siguiente solución. Si se presiona \emph{enter}, se termina de ejecutar la query.}. Por ejemplo, para listar los hijos de Cronos:
+\begin{lstlisting}
+?- padre(cronos, X).
+X = hades ;
+X = poseidon ;
+X = zeus.
+\end{lstlisting}
+
+Con el uso de variables, pueden escribirse queries más complejas, por ejemplo, si se desea saber si Poseidon y Hades son hermanos:
+\begin{lstlisting}
+?- padre(X, poseidon), padre(X, hades).
+X = cronos .
+\end{lstlisting}
+
+Es decir ``existe $X$ tal que $X$ es padre de Poseidon y $X$ es padre de Hades''.
+
+Incluso puede utilizarse más de una variable en una query. Por ejemplo, para conocer todos los hermanos en la base de datos:
+\begin{lstlisting}[label=lst:queryhermanos]
+% El \== el operador 'distinto'
+?- padre(X, A), padre(X, B), A \== B.
+X = cronos,
+A = hades,
+B = poseidon ;
+X = cronos,
+A = hades,
+B = zeus ;
+X = cronos,
+A = poseidon,
+B = hades ;
+% ... Hay un total de 8 soluciones.
+\end{lstlisting}
+
+Es decir, todas las ternas de individuos $\{X,A,B\}$ tales que $X$ sea padre de $A$ y de $B$, y $A$ y $B$ no sean el mismo individuo. Notar que la entre los resultados aparecen dos veces cada relación de ``hermanos'', por ejemplo $\{X=cronos,A=hades,B=poseidon\}$ y $\{X=cronos,A=poseidon,B=hades\}$ ya que esta relación es ``conmutativa''.
+
 \subsection{Reglas}
 \label{sec:reglas}
 
