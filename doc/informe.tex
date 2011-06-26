@@ -386,7 +386,22 @@ B = hades ;
 
 Es decir, todas las ternas de individuos $\{X,A,B\}$ tales que $X$ sea padre de $A$ y de $B$, y $A$ y $B$ no sean el mismo individuo. Notar que la entre los resultados aparecen dos veces cada relación de ``hermanos'', por ejemplo $\{X=cronos,A=hades,B=poseidon\}$ y $\{X=cronos,A=poseidon,B=hades\}$ ya que esta relación es ``conmutativa''.
 
+Las variables también peuden ser usadas en hechos para definir \emph{hechos universales}. Por ejemplo, si se tiene un predicado \lstinline|gusta/2|\footnote{El \lstinline|/2| define la aridad de un predicado. Ver sección (\ref{sec:datos}).} que indica qué le gusta a cada persona:
+\begin{lstlisting}
+gusta(lucas, programar).
+gusta(juan, dormir).
+gusta(juan, tv).
+gusta(djfray, cocinar).
+% ... etc
+\end{lstlisting}
+
+Es un hecho que a todo el mundo le gusta el chocolate (si no lo és, debería). Se podría escribir a mano cada hecho \lstinline|gusta| entre cada individuo y \lstinline|chocolate|, pero eso sería engorroso y además poco robusto, ya que si en un futuro se llegase a consultar por algún individuo no contemplado en esa cantidad finita de hechos daría que a éste no le gusta el chocolate, lo cual es inadmisible. La solución es sencilla, hacer que \lstinline|gusta| sea un hecho para cualquier individuo y \lstinline|chocolate|:
+\begin{lstlisting}
+gusta(X, chocolate).
+\end{lstlisting}
+
 \subsection{Reglas}
+
 \label{sec:reglas}
 
 \subsection{Tipos de datos}
