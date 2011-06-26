@@ -401,8 +401,55 @@ gusta(X, chocolate).
 \end{lstlisting}
 
 \subsection{Reglas}
-
 \label{sec:reglas}
+
+Los ejemplos interesantes de queries existenciales ya vistos definían en sí relaciones en un modelo. Por ejemplo, la query \lstinline|?- padre(X, A), padre(X, B), A \== B| define la relación ``hermano'' entre \lstinline|A| y \lstinline|B|. Las \emph{reglas}, en principio, pueden utilizarse para plasmar esa relación en el programa lógico mismo y hacer así un modelo más interesante. Esa misma relación de hermandad traducida a una regla sería:
+\begin{lstlisting}
+hermano(A, B) :- padre(X, A), padre(X, B), A \== B.
+\end{lstlisting}
+
+Puede interpretarse como ``$A$ y $B$ son hermanos si existe un $X$ tal que $X$ es padre de $A$ y de $B$ y $A$ y $B$ son distintos''. Así, queda definido un nuevo predicado \lstinline|hermano/2|, que puede ser usado para hacer queries más directas:
+\begin{lstlisting}
+?- hermano(apolo, artemisa).
+true .
+\end{lstlisting}
+
+Las reglas son el equivalente en Prolog a las cláusulas de Horn. La forma general de una cláusula de Horn es:
+\[
+h \leftarrow (b_1 \land \cdots \land b_n)
+\]
+
+Que, traducido a una regla de Prolog sería:
+\begin{lstlisting}
+h :- b1, ..., bn
+\end{lstlisting}
+
+Donde $h$ es la cabeza (\emph{head}) de la regla y $(b_1 \land \cdots \land b_n)$ es el cuerpo (\emph{body}), y tanto $h$ como $b_1 \cdots b_n$ son predicados lógicos.
+
+Se puede observar que los hechos son en realidad un caso especial de regla cuando $n=0$. El hecho:
+\begin{lstlisting}
+gusta(X, chocolate).
+\end{lstlisting}
+
+Es equivalente a una regla que se cumple siempre:
+\begin{lstlisting}
+gusta(X, chocolate) :- true.
+\end{lstlisting}
+
+Es importante notar que el cuerpo de una regla es una conjunción lógica (operador \emph{and}). Eso quiere decir, entonces, que la cabeza de una regla es consecia de que se cumplan \emph{todos} los predicados del cuerpo. A veces es deseable plantear que un predicado se cumpla por más de una condición, es decir una disjunción lógica (\emph{or}). Por ejemplo, para modelar la relación ``familiar cercano'' entre dos individuos, $A$ y $B$, que se cumple si ambos son hermanos, o si son padre e hijo, es necesario plantear una disjunción. En Prolog, si bien existen otras formas de hacerlo, esto se modela simplemente usando múltimples reglas:
+\begin{lstlisting}
+familiar_cercano(A, B) :- padre(A, B).
+familiar_cercano(A, B) :- padre(B, A).
+familiar_cercano(A, B) :- hermano(A, B).
+\end{lstlisting}
+
+Así, se puede averiguar quiénes son los familiares cercanos de Artemisa:
+\begin{lstlisting}
+?- familiar_cercano(artemisa, X).
+X = zeus ;
+X = apolo .
+\end{lstlisting}
+
 
 \subsection{Tipos de datos}
 \label{sec:datos}
