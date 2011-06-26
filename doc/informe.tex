@@ -412,12 +412,107 @@ Vemos a continuación dos ejemplos más completos.
 
 ``Cambio'' es un programa que simula las posibilidades de cambiar un billete por monedas.
 
-Se tiene un stock de 10 monedas de cada tipo, a saber: 5 centavos, 10 centavos, 25
+Se tiene un stock de 10 monedas de cada tipo, a saber: 5 centavos, 10 centavos, 25 centavos, 50 centavos, y 1 peso. Es decir, en total se cuenta con 50 monedas. Además, se puede pedir cambio de cualquiera de estos billetes: 2,5,10,20,50, o 100 pesos.
 
-Veamos el código fuente del programa:
+El código fuente del programa es el siguiente:
 \lstinputlisting{../src/cambio.pl}
 
+Luego de compilar el programa, vamos a hacer unas pruebas, y a partir de ahí vamos a razonar el funcionamiento del programa:
 
+\subsubsection{Pruebas}
+
+\begin{itemize}
+ \item \textbf{Prueba de verificación}: Se pregunta al interprete si se puede cambiar un billete de \$2 por 1 moneda de un peso, 1 de cincuenta, y 2 de veinticinco.
+
+\begin{lstlisting}
+?- cambio(2,1,1,2,0,0).
+true . 
+\end{lstlisting}
+
+Otro ejemplo, podría ser si se puede cambiar un billete de \$2 por 2 monedas de un peso y una de 5 centavos.
+\begin{lstlisting}
+?- cambio(2,2,0,0,0,1).
+false.
+\end{lstlisting}
+
+Vemos que una utilidad del programa es verificar una propuesta de cambio es correcta, o no.
+
+ \item \textbf{Prueba con variables}: Ahora, en vez de pasarle valores a la funciones, y que la misma nos conteste si esa condición verifica o no, es decir, si corresponde a un modelo válido o no, vamos a pasarle variables, para que el modelo nos indique \textit{para que valores} se verifica. Hay que tener en cuenta, que al pasar las variables, la solución no es necesariamente única, sino que puede haber una, varias o ninguna solución.
+
+En primer lugar, vamos a pedir cambio de cincuenta, sin restricciones:
+\begin{lstlisting}
+?- cambio(50,Peso,Cincuenta,Veinticinco,Diez,Cinco).
+false.
+\end{lstlisting}
+Devuelve \textit{false}, eso quiere decir que no encontró ninguna solución posible. Esto es bastante lógico, ya que nos limita el stock de monedas: aún devolviendole todas, no vamos a poder llegar a juntar 50 pesos.
+
+Veamos, ahora un ejemplo que tenga soluciones. Por ejemplo, pidiendo cambio de 5 pesos:
+\begin{lstlisting}
+?- cambio(5,Peso,Cincuenta,Veinticinco,Diez,Cinco).
+Peso = 0,
+Cincuenta = 2,
+Veinticinco = 10,
+Diez = 10,
+Cinco = 10 
+\end{lstlisting}
+Acá vemos una solución posible. Sin embargo, el intérprete nos indica que no es la única. Apretando la tecla ``n'' vemos más soluciones:
+\begin{lstlisting}
+Peso = 0,
+Cincuenta = 3,
+Veinticinco = 8,
+Diez = 10,
+Cinco = 10 ;
+
+Peso = 0,
+Cincuenta = 3,
+Veinticinco = 9,
+Diez = 8,
+Cinco = 9 ;
+
+Peso = 0,
+Cincuenta = 3,
+Veinticinco = 9,
+Diez = 9,
+Cinco = 7 ;
+
+Peso = 0,
+Cincuenta = 3,
+Veinticinco = 9,
+Diez = 10,
+Cinco = 5 
+\end{lstlisting}
+
+Y así podríamos seguir un buen rato...
+
+\end{itemize}
+
+\subsubsection{Análisis del Código Fuente}
+
+Veamos el código fuente por partes. En primer lugar, uno se podría preguntar a que se refiere esta parte del código:
+\begin{lstlisting}
+member(X,[X|_]).
+member(X,[_|R]) :- member(X,R).
+
+stock(X) :- member(X,[0,1,2,3,4,5,6,7,8,9,10]).
+billetes(X) :- member(X,[2,5,10,20,50,100]).
+\end{lstlisting}
+
+Vemos la regla \textit{stock(X)}. Esta regla se puede leer como ``stock(X) es verdadero si X es miembro de la lista formada por números del 1 al 10''. Es decir, si X es un número de 1 a 10, \textit{hay stock de X}. La misma regla se aplica para billetes, solo que en este caso X puede tomar los valores mencionados anteriormente.
+
+La función ``cambio'':
+
+\begin{lstlisting}
+cambio(Billete,Peso,Cincuenta,Veinticinco,Diez,Cinco) :-
+        stock(Peso),
+        stock(Cincuenta),
+        stock(Veinticinco),
+        stock(Diez),
+        stock(Cinco),
+        billetes(Billete),
+        100*Billete =:= 100*Peso + 50*Cincuenta + 25*Veinticinco + 10*Diez + 5*Cinco.
+\end{lstlisting}
+
+Esta función devuelve \textit{true} si se cumplen todas las condiciones enumeradas. Primero, que haya \textit{stock} de monedas, de un peso, cincuenta centavos, veinticinco, 10 , y cinco centavos. Luego, que el billete ingresado tome uno de los valores válidos, a saber, 2,5,10,20,50, o 100. Por último, la condición más importante, que la suma de las monedas sea igual, en valor monetario, al valor del billete.
 
 \subsection{N Reinas}
 
