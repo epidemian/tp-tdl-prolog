@@ -154,6 +154,11 @@ Martín Paulucci & 88509 & martin.c.paulucci@gmail.com \\
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
 
+% Luego del índice, links con color.
+\hypersetup{
+linkcolor=red
+}
+
 % Cosas Nuevas -----------------------------------------------------------------
 
 % Nota de traducción: statement = proposición
@@ -182,6 +187,7 @@ Es decir, un programa en un lenguaje declarativo describe \emph{qué} debe reali
 A modo de ejemplo, se puede mencionar el popular lenguaje de consultas sobre bases de datos SQL. Éste es un lenguaje declarativo ya que el programador SQL expresa las consultas sobre un modelo abstracto (basado en el álgebra relacional) en términos de ``tablas'' y ``registros'', y es luego el entorno de ejecución (llamado motor de base de datos) quien se encarga de traducir estas consultas a instrucciones que la computadora puede ejecutar.
 
 \subsection{Programas Lógicos}
+\label{sec:programaslogicos}
 
 Para resolver un problema dentro del paradigma lógico, en vez de darse las instrucciones necesarias para llevar a cabo las operaciones que lo resuelven, se define la información (los conocimientos) del problema y sus suposiciones en forma \emph{axiomas lógicos}. Ese conjunto de aximas es lo que en el paradigma lógico se conoce como \emph{programa}. Para ejecutar el programa se debe proporcionar el problema a resolver, el objetivo, expresado como una \emph{proposición} lógica a ser probada. 
 
@@ -267,7 +273,7 @@ Las implementaciones más conocidas son:
 \section{Programación en Prolog}
 \subsection{Hechos}
 
-El tipo de cláusula más simple en Prolog es el \emph{hecho}. Respresenta una verdad en un programa. Por ejemplo.
+El tipo de proposición más simple en Prolog es el \emph{hecho}. Respresenta una verdad en un programa. Por ejemplo.
 \begin{lstlisting}
 varon(pedro).
 \end{lstlisting}
@@ -277,7 +283,7 @@ Los hechos sirven para definir relaciones entre elementos. Por ejemplo:
 \begin{lstlisting}
 padre(zeus, apolo).
 \end{lstlisting}
-Que puede interpretarse como: la relación \lstinline|padre| se cumple para los elementos \lstinline|zeus| y \lstinline|apolo|. El término utilizado en Prolog para referirse a las relaciones es \emph{predicado} y para los elementos individuales \emph{átomo} (ver sección \ref{atomos}).
+Que puede interpretarse como: la relación \lstinline|padre| se cumple para los elementos \lstinline|zeus| y \lstinline|apolo|. El término utilizado en Prolog para referirse a las relaciones es \emph{predicado} y para los elementos individuales \emph{átomo} (ver sección \ref{sec:datos}). Tanto predicados como átomos deben ser identificadores que comiencen con minúscula.
 
 Los hechos son especialmente útiles para representar relaciones entre un conjunto de elementos finitos, lo cual puede interpretarse como una forma de \emph{base de datos}. Por ejemplo:
 \begin{lstlisting}[label=lst:diosesgriegos]
@@ -289,15 +295,31 @@ padre(zeus, apolo).
 padre(zeus, artemisa).
 \end{lstlisting}
 
-\subsection{Átomos y Predicados}
-\label{atomos}
+\subsection{Consultas (Queries)}
+
+Otro tipo de proposición en Prolog son las consultas, o \emph{queries}, que sirven para extraer información de un programa lógico. Las queries se \emph{ejecutan} sobre un programa, es decir, se resuelven a partir de los axiomas definidos en él. En la programción lógica en general se las conoce como \emph{proposición objetivo} (\ref{sec:programaslogicos})
+
+Un ejemplo de query sobre el programa antes visto de los dioses griegos (\ref{lst:diosesgriegos}) podría ser \lstinline|padre(zeus, apolo)|, que, al ejecutarlo\footnote{Los sistemas Prolog en general proveen un ambiente interactivo para ejecutar queries sobre programas. En este trabajo práctico se utilizó la implementación de SWI Prolog.}, el sistema informa que se cumple devolviendo \emph{true}:
+\begin{lstlisting}[basicstyle=\color{green}\ttfamily\small,backgroundcolor=\color{black!70}]
+?- padre(zeus, apolo).
+true .
+?- padre(zeus, cronos).
+false.
+?- padre(juan, tobias).
+false.
+\end{lstlisting}
+
+Se puede observar que cuando el predicado no se cumple, el resultado es \emph{false}. 
+
+Este es el tipo más sencillo de queries, es decir, verificar si se cumple una relación a partir de hechos. Mediante se presenten nuevas construcciones del lenguaje se mostrarán queries más complejas.
 
 \subsection{Variables}
 \subsection{Reglas}
 \label{sec:reglas}
 
-\subsection{Consultas (Queries)}
 \subsection{Tipos de datos}
+\label{sec:datos}
+
 \subsubsection{Simples}
 \subsubsection{Listas}
 \subsection{Recursividad}
