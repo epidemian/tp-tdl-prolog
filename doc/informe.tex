@@ -302,14 +302,14 @@ Otro tipo de proposición en Prolog son las consultas, o \emph{queries}, que sir
 Un ejemplo de query sobre el programa antes visto de los dioses griegos (\ref{lst:diosesgriegos}) podría ser \lstinline|padre(zeus, apolo)|, que, al ejecutarlo\footnote{Los sistemas Prolog en general proveen un ambiente interactivo para ejecutar queries sobre programas. En este trabajo práctico se utilizó la implementación de SWI Prolog.}, el sistema informa que se cumple devolviendo \emph{true}:
 \begin{lstlisting}[basicstyle=\color{green}\ttfamily\small,backgroundcolor=\color{black!70}]
 ?- padre(zeus, apolo).
-true .
+true.
 ?- padre(zeus, cronos).
 false.
 ?- padre(juan, tobias).
 false.
 \end{lstlisting}
 
-Se puede observar que cuando el predicado no se cumple, el resultado es \emph{false}. 
+Se puede observar que cuando la proposición no se cumple, el resultado es \emph{false}. 
 
 Este es el tipo más sencillo de queries, es decir, verificar si se cumple una relación a partir de hechos. Mediante se presenten nuevas construcciones del lenguaje se mostrarán queries más complejas.
 
