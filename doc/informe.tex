@@ -59,6 +59,7 @@ pdfborder= 0 0 0
     commentstyle=\color[rgb]{0.133,0.545,0.133},
     stringstyle=\color[rgb]{0.627,0.126,0.941},
     morekeywords={true,false},
+    showstringspaces=false,     % No muestra underscores en los espacios de los strings.
     backgroundcolor=\color{blue!10}, % Un color suave de fondo (menos chocante que el frame=single)
     breaklines=false,            % Wrappea las lineas automáticamente.
     belowskip=0pt               % Reduce el espacio entre un listing y el párrafo siguiente
@@ -436,7 +437,7 @@ Es equivalente a una regla que se cumple siempre:
 gusta(X, chocolate) :- true.
 \end{lstlisting}
 
-Es importante notar que el cuerpo de una regla es una conjunción lógica (operador \emph{and}). Eso quiere decir, entonces, que la cabeza de una regla es consecia de que se cumplan \emph{todos} los predicados del cuerpo. A veces es deseable plantear que un predicado se cumpla por más de una condición, es decir una disjunción lógica (\emph{or}). Por ejemplo, para modelar la relación ``familiar cercano'' entre dos individuos, $A$ y $B$, que se cumple si ambos son hermanos, o si son padre e hijo, es necesario plantear una disjunción. En Prolog, si bien existen otras formas de hacerlo, esto se modela simplemente usando múltimples reglas:
+Es importante notar que el cuerpo de una regla es una conjunción lógica (operador \emph{and}). Eso quiere decir, entonces, que la cabeza de una regla es consecia de que se cumplan \emph{todos} los predicados del cuerpo. A veces es deseable plantear que un predicado se cumpla por más de una condición, es decir una disjunción lógica (\emph{or}). Por ejemplo, para modelar la relación ``familiar cercano'' entre dos individuos, $A$ y $B$, que se cumple si ambos son hermanos, o si son padre e hijo, es necesario plantear una disjunción. En Prolog, si bien existen otras formas de hacerlo\footnote{Así como el operador \lstinline|,/2| (la coma) denota una conjunción, el operador \lstinline|;/2| deonta una disjunción, pero no se recomienda su uso, al menos al programador Prolog principiante, ya que puede llevarlo a escribir reglas demasido complejas y no entender bien la idea de que un predicado puede definirse a partir de varias relgas.}, se estila modelar esto usando simplemente múltimples reglas:
 \begin{lstlisting}
 familiar_cercano(A, B) :- padre(A, B).
 familiar_cercano(A, B) :- padre(B, A).
@@ -454,10 +455,19 @@ X = apolo .
 \subsection{Tipos de datos}
 \label{sec:datos}
 
-\subsubsection{Simples}
-\subsubsection{Listas}
+Prolog posee un tipo de dato unificado: el \emph{término}. Existen términos simples: los átmos, variables y numerales; y términos compuestos.
+
+\begin{itemize}
+    \item Un \textbf{átomo} es simplemente un identificador. No tiene un sentido matemático como los números o las listas. Se escribe como una cadena de caracteres alfanuméricos comenzando con minúscula o entre comillas simples (estos últimos pueden contener espacios y comenzar con mayúscula). Algunos ejemplos de átomos: \lstinline|a|, \lstinline|lunes|, \lstinline|'Teoria de Lenguajes'|.
+    \item Los \textbf{numerales} pueden ser tanto enteros como de coma flotante. Los enteros son de especial interés para Prolog, ya que, al ser numerables poseen propiedades que pueden utilizarse para inferencias lógicas, como que existe \emph{siguiente} o el \emph{anterior} de todo número entero.
+    \item Una \textbf{variable} representa un valor arbitrario en una expresión, y se escribe como una cadena de caracteres alfanuméricos comenzando por mayúscula, por ejemplo \lstinline|X| o \lstinline|Dia|.
+    \item Un \textbf{término compuesto} es una expresión conformada por un átomo, llamado \emph{functor}, y una serie de términos, los \emph{argumentos} separados por coma y rodeados por paréntesis. Ejemplos de términos compuestos pueden ser \lstinline|padre(X, poseidon)| o \lstinline|pertenece(X, [1, 2, 3])|. Las listas y los strings son términos compuestos con una sintaxis especial.
+\end{itemize}
+
 \subsection{Recursividad}
 (ejemplo ancestro)
+
+\subsection{Listas}
 
 \newpage
 \section{Modelo de ejecución de Prolog}
