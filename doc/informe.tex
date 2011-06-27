@@ -387,6 +387,8 @@ B = hades ;
 
 Es decir, todas las ternas de individuos $\{X,A,B\}$ tales que $X$ sea padre de $A$ y de $B$, y $A$ y $B$ no sean el mismo individuo. Notar que la entre los resultados aparecen dos veces cada relación de ``hermanos'', por ejemplo $\{X=cronos,A=hades,B=poseidon\}$ y $\{X=cronos,A=poseidon,B=hades\}$ ya que esta relación es ``conmutativa''.
 
+\subsubsection*{Hechos Universales}
+
 Las variables también peuden ser usadas en hechos para definir \emph{hechos universales}. Por ejemplo, si se tiene un predicado \lstinline|gusta/2|\footnote{El \lstinline|/2| define la aridad de un predicado. Ver sección (\ref{sec:datos}).} que indica qué le gusta a cada persona:
 \begin{lstlisting}
 gusta(lucas, programar).
@@ -465,12 +467,173 @@ Prolog posee un tipo de dato unificado: el \emph{término}. Existen términos si
 \end{itemize}
 
 \subsection{Recursividad}
-(ejemplo ancestro)
+\label{sec:recursividad}
+
+Hasta ahora, usando hechos y reglas simples se pudieron definir algunos programas con capacidades de inferencia medianmente interesantes. Pero este tipo de programas no es suficiente para representar un tipo de relaciones muy interesante: las que se definen en base a sí mismas.
+
+A modo de ejemplo, se volverá a utilizar como base el programa de los dioses griegos (\ref{lst:diosesgriegos}). Esta vez se desea representar la relación ``ancestro'' . Una forma ingenua de encarar este problema sería:
+\begin{lstlisting}
+% ancestro(A, B) verifica si A es ancestro de B.
+ancestro(A, B) :- padre(A, B).
+ancestro(A, B) :- padre(A, X), padre(X, B).
+ancestro(A, B) :- padre(A, X), padre(X, Y), padre(Y, B).
+% ... ad-infinitum?
+\end{lstlisting}
+
+Es decir, plantear la relación como ``$A$ es ancestro de $B$ si $A$ es padre de $B$, o si $A$ es abuelo de $B$, o si $A$ es bisabuelo de $B$, o si \dots''. Pero, ¿hasta cuándo seguir? ¿Cuántos niveles de ascendencia son suficientes?
+
+Es evidente que planteando la relación ``ancestro'' de esta manera nunca se podría llegar a una forma general. En el intento de generalizar esta relación, surge naturalmente una definición recursiva: ``$A$ es ancestro de $B$ si $A$ es padre de un ancestro de $B$, ó si $A$ es padre de $B$ directamente''.
+\begin{lstlisting}
+ancestro(A, B) :- padre(A, B).
+ancestro(A, B) :- padre(A, X), ancestro(X, B).
+\end{lstlisting}
+
+Es importante notar que para definir la regla recursiva es necesario también otra regla no-recursiva que hace las veces de ``condición de corte'' para no caer en la recusividad infinita.
+
+Ahora \lstinline|ancestro/2| funciona bien para cualquier nivel de ascendencia:
+\begin{lstlisting}
+?- ancestro(urano, apolo).
+true .
+
+?- ancestro(X, apolo).
+X = zeus ;
+X = urano ;
+X = cronos .
+
+?- ancestro(X, urano).
+false.
+\end{lstlisting}
+
+Otra forma de definir \lstinline|ancestro/2|, que resulta funcionalmente equivalente, es:
+\begin{lstlisting}
+ancestro(A, B) :- padre(A, B).
+ancestro(A, B) :- ancestro(A, X), ancestro(X, B).
+\end{lstlisting}
+
+Esta forma de definir la relación quizá resulta chocante a primera vista al programador acostrumbrado al paradigma imperativo que ve a las reglas como procedimientos y a los cuerpos de las mismas como llamadas a otros procedimientos. Es importante recordar que \lstinline|ancestro/2| es un predicado definido a partir de dos reglas. Que la segunda regla de \lstinline|ancestro/2| ``llame'' (para ponerlo en términos imperativos, aunque poco correctos) sólo a \lstinline|ancestro/2|, esto no quiere decir que esa llamada sólo vaya a evaluar esa segunda regla para ejecutarse.
+
+Más adelante se verán ejemplos de seguimientos de programas y las definiciones recursivas, en especial el modo en que se resuelven, quedará más claro.
 
 \subsection{Listas}
 
+Las listas en Prolog pueden definirse, como en muchos lenguajes funcionales, de una forma recursiva. 
+\[
+\textit{lista} = \left\{
+  \begin{array}{l}
+  \textit{lista vacía} \\
+  \textit{un elemento seguido de una lista} \\
+  \end{array} \right.
+\]
+
+En Prolog, la lista vacía se denota \lstinline|[]|, y una lista conformada por un elemento \lstinline|H| seguido por una lista \lstinline|T| se denota \lstinline$[H|T]$. La elección de nombres \lstinline|H| y \lstinline|T| es en referencia a la convención utilizada generalmente en la programción funcional para referirse al primer elemento de una lista como la \emph{cabeza} (\emph{head}) y al resto como la \emph{cola} (\emph{tail}), y al operador \lstinline$|/2$ como \emph{operador concatenación}. 
+
+Así, la lista con los elementos \lstinline|1|, \lstinline|2| y \lstinline|3| podría escribirse como \lstinline$[1|[2|[3|[]]]]$, pero por suerte existe una notación más conveniente: \lstinline|[1,2,3]|.
+
+\subsubsection*{Pattern Matching}
+
+La notación con el operador concatenación, sin embargo, es útil para hacer \emph{pattern matching} en reglas (o hechos). Por ejemplo:
+\begin{lstlisting}
+cabeza(H, [H|T]).
+\end{lstlisting}
+
+Es una hecho que dice algo trivial: la cabeza de una lista con forma \lstinline$[H|T]$ es \lstinline|H|. Sin embargo, sirve para notar algo importante: la única lista que no \emph{matchea}\footnote{``Igualar'' o ``hacer juego con'' son pésimas traducciones, así que se opta por usar la versión castellanizada.} con \lstinline$[H|T]$ es la lista vacía, hecho que se utiliza a menudo para definir condiciones de corte en predicados recursivos.
+
+En general, cuando una variable sólo se utiliza una vez y luego no se vuelve a hacer referencia a ella (i.e. el valor de la misma no es importante para definir la regla), se suele utilizar un guión bajo como \emph{placeholder} para indicar eso:
+\begin{lstlisting}
+cabeza(H, [H|_]).
+\end{lstlisting}
+
+Algunas queries para empezar a creer en el pattern matching:
+\begin{lstlisting}
+?- cabeza(X, [4,5,6]).
+X = 4.
+?- cabeza(X, []).
+false.
+?- cabeza(3, [1,2,3]).
+false.
+\end{lstlisting}
+
+Se puede combinar la notación de listas con comas y con operador concatenación para hacer patrones más complejos, por ejemplo:
+\begin{lstlisting}
+tercer_elemento(X, [_,_,X|_]).
+\end{lstlisting}
+
+El patrón \lstinline$[_,_,X|_]$ matchea con cualquier lista de tres elementos o más que tenga \lstinline|X| como tercer elemento.
+
+\subsubsection*{Reglas Recursivas}
+
+Al ser las listas una estructura recursiva en sí mismas, es natural que suelan utilizarse reglas recursivas para definir propiedades sobre ellas. Un ejemplo títpico es el predicado \lstinline|pertenece/2|:
+\begin{lstlisting}
+% pertenece(X,L) verifica si X es un elemento de la lista L
+pertenece(X, [X|_]).
+pertenece(X, [_|T]) :- pertenece(X,T).
+\end{lstlisting}
+
+La forma de definir un predicado recursivo resulta ya familiar (sección \ref{sec:recursividad}): una hecho básico, ``$X$ pertenece a una lista que comienza con $X$; y una regla recursiva: $X$ pertenece a una lista que comienza con cualquier cosa si pertenece a su cola.
+
+Con ésta definición de \lstinline|pertenece/2| ya se pueden resolver en Prolog todas las consultas que se habían mencionado en la sección Programas Lógicos (\ref{sec:programaslogicos}).
+
+``Existe algún $X$ tal que $X$ pertenece a la lista $[4,2,5]$'':
+\begin{lstlisting}
+?- pertenece(X, [4,2,5]).
+X = 4 ;
+X = 2 ;
+X = 5.
+\end{lstlisting}
+
+``Existe algún $X$ tal que $X$ pertenece a $[3,4,5,6]$ y no pertenece a $[1,2,3,4]$'':
+\begin{lstlisting}
+?- pertenece(X, [3,4,5,6]), pertenece(X, [1,2,3,4]).
+X = 3 ;
+X = 4.
+\end{lstlisting}
+
+``Existen algunos $X$ e $Y$ tales que $X$ pertenece a $[1,2,3]$ e $Y$ pertenece a $[10,20]$'':
+\begin{lstlisting}
+?- pertenece(X, [1,2,3]), pertenece(Y, [10,20]).
+X = 1,
+Y = 10 ;
+X = 1,
+Y = 20 ;
+X = 2,
+Y = 10 ;
+X = 2,
+Y = 20 ;
+X = 3,
+Y = 10 ;
+X = 3,
+Y = 20.
+\end{lstlisting}
+
+``Existe algún $X$ tal que $X$ pertenece a $[1, 2]$ y $X$ pertenece a $[3, 4]$'':
+\begin{lstlisting}
+?- pertenece(X, [1,2]), pertenece(X, [3,4]).
+false.
+
+\end{lstlisting}
+
+``$3$ pertenece a $[2,3,4]$'':
+\begin{lstlisting}
+?- pertenece(3, [2,3,4]).
+true.
+\end{lstlisting}
+
+``Existe $L$ tal que $5$ pertenece a $L$'':
+\begin{lstlisting}
+?- pertenece(5, L).
+L = [5|_G288] ;
+L = [_G287, 5|_G291] ;
+L = [_G287, _G290, 5|_G294] ;
+L = [_G287, _G290, _G293, 5|_G297] ;
+L = [_G287, _G290, _G293, _G296, 5|_G300] ;
+L = [_G287, _G290, _G293, _G296, _G299, 5|_G303] .
+\end{lstlisting}
+
+Este último caso resulta interesante. Las soluciones son infinitas\footnote{Pero por suerte SWI Prolog requiere que el usuario vaya apretando \emph{n} para ir calculando cada solución en vez de intentar calcularlas todas.}, y la forma de cada solución es una lista con un 5. La primer solución es una lista de al menos un elemento, un 5; su cola puede ser una lista arbitraria y eso es lo que representa ese nombre poco-feliz. La segunda solución es una lista de al menos dos elementos, el primero de un valor arbitrario y el segundo un 5. Y así sucesivamente\dots
 \newpage
 \section{Modelo de ejecución de Prolog}
+% Ver página 35 del libro
+
 \subsection{Algoritmo de backtracking}
 \subsection{Seguimiento de factorial}
     Algún otro ejemplo? (el de ancestro es copado para hacer un seguimiento =P)
@@ -562,11 +725,11 @@ Y así podríamos seguir un buen rato...
 
 Veamos el código fuente por partes. En primer lugar, uno se podría preguntar a que se refiere esta parte del código:
 \begin{lstlisting}
-member(X,[X|_]).
-member(X,[_|R]) :- member(X,R).
+pertenece(X,[X|_]).
+pertenece(X,[_|R]) :- pertenece(X,R).
 
-stock(X) :- member(X,[0,1,2,3,4,5,6,7,8,9,10]).
-billetes(X) :- member(X,[2,5,10,20,50,100]).
+stock(X) :- pertenece(X,[0,1,2,3,4,5,6,7,8,9,10]).
+billetes(X) :- pertenece(X,[2,5,10,20,50,100]).
 \end{lstlisting}
 
 Vemos la regla \textit{stock(X)}. Esta regla se puede leer como ``stock(X) es verdadero si X es miembro de la lista formada por números del 1 al 10''. Es decir, si X es un número de 1 a 10, \textit{hay stock de X}. La misma regla se aplica para billetes, solo que en este caso X puede tomar los valores mencionados anteriormente.

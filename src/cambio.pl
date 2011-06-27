@@ -1,9 +1,9 @@
 
-member(X,[X|_]).
-member(X,[_|R]) :- member(X,R).
+pertenece(X,[X|_]).
+pertenece(X,[_|R]) :- pertenece(X,R).
 
-stock(X) :- member(X,[0,1,2,3,4,5,6,7,8,9,10]).
-billetes(X) :- member(X,[2,5,10,20,50,100]).
+stock(X) :- pertenece(X,[0,1,2,3,4,5,6,7,8,9,10]).
+billetes(X) :- pertenece(X,[2,5,10,20,50,100]).
 
 cambio(Billete,Peso,Cincuenta,Veinticinco,Diez,Cinco) :-
 	stock(Peso),
