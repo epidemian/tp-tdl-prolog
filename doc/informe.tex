@@ -182,10 +182,10 @@ linkcolor=red
 
 % Nota de traducción: statement = proposición
 
-\section{Programción Lógica}
+\section{Programación Lógica}
 \subsection{Concepción}
 
-El paradigma de la programación lógica surge de la necesidad de los programadores, o científicos, de expresar formalmente sus objetivos, así como sus conocimientos y suposiciones. La lógica provee las bases para deducir consecuencias a partir de premisas, para encontrar la verdad o la falsedad de una proposición a partir de otras y para verificar la valiz de de un argumento lógico.
+El paradigma de la programación lógica surge de la necesidad de los programadores, o científicos, de expresar formalmente sus objetivos, así como sus conocimientos y suposiciones. La lógica provee las bases para deducir consecuencias a partir de premisas, para encontrar la verdad o la falsedad de una proposición a partir de otras y para verificar la validez de de un argumento lógico.
 
 Si bien el propósito de las computadoras es ser usadas por personas, la dificultad de su construcción fue tan grande que los lenguajes utilizados para expresar los problemas que estas debían resolver fueron diseñados desde la perspectiva del funcionamiento de la computadora en sí.
 
@@ -193,11 +193,11 @@ Las computadoras modernas están basadas en la arquitectura de von Neumann \cite
 
 A medida que los programas se hicieron más complejos, se necesitó más esfuerzo para traducir los conceptos que se querían modelar a un lenguaje que las computadoras pudieran interpretar, es decir \emph{programar} se volvió más complejo. Para aliviar este problema se crearon lenguajes con mayor poder de abstracción, capaces de expresar las ideas del progrmador de forma más directa. Partiendo desde el lenguaje ensamblador, y pasando por C, Pascal, Java y muchos otros, todos estos lenguajes son derivados de la arquitectura de von Neumann, y por lo tanto comparten el mismo modelo subyacente de ejecución. Este paradigma de programción es el que se conoce como la \emph{programación imperativa}.
 
-Si bien la lógica se usó como una herramienta para diseñar computadoras y programas desde sus comienzos, su uso directo como lenguaje de progrmación, lo cual se conoce como \emph{programción lógica}, se plantea mucho después \footnote{Finales de la década del 60 o principios de la del 70.} como alternativa a la programción imperativa.
+Si bien la lógica se usó como una herramienta para diseñar computadoras y programas desde sus comienzos, su uso directo como lenguaje de progrmación, lo cual se conoce como \emph{programación lógica}, se plantea mucho después \footnote{Finales de la década del 60 o principios de la del 70.} como alternativa a la programción imperativa.
 
 \subsection{Declaratividad}
 
-La programción lógica, así como la programción funcional, perteneca al paradigma de la programción declarativa, y difiere enormemente de la programación imperativa. En vez estar basada en el modelo de von Neumann, la programación declarativa se basa en un modelo abstracto que no guarda ninguna relación con el modelo de la máquina. 
+La programación lógica, así como la programción funcional, perteneca al paradigma de la programción declarativa, y difiere enormemente de la programación imperativa. En vez estar basada en el modelo de von Neumann, la programación declarativa se basa en un modelo abstracto que no guarda ninguna relación con el modelo de la máquina. 
 
 Así, el programador, en vez de tener que adaptar sus ideas a un modelo que se diseñó para una arquitectura de computadora en un momento dado, puede expresarlas sobre un modelo diseñado para ese fín, sin tener que preocuparse por la forma en que luego la computadora ejecutará estas acciones. 
 
@@ -256,7 +256,7 @@ Lo cual se puede reescribir como una implicación lógica equivalentemente:
 
 La programación lógica tiene sus bases en las cláusulas de Horn gracias a su interpretación procedural formulada por Robert Kowalski, quien demostró que una clásula de Horn como \eqref{eq:horn} puede resolverse proceduramente \cite{kowalski} planteando $h$ como el encabezado (\emph{head}) de un procedimiento y $b_1 \land \cdots \land b_n$ como su cuerpo (\emph{body}). Lo cual puede leerse proceduralmente como: \emph{para resolver (ejecutar) $h$, resolver (ejecutar) $b_1$ y $b_2$ y $\cdots$ y $b_n$}. 
 
-Para remarcar esta relación entre el encabezado de la cláusula y su cuerpo, en la programción lógica suele utilizarse el operador de consecuencia lógica, cuya notación resulta más similiar a la de una \emph{regla} de Prolog (ver sección \ref{sec:reglas}):
+Para remarcar esta relación entre el encabezado de la cláusula y su cuerpo, en la programación lógica suele utilizarse el operador de consecuencia lógica, cuya notación resulta más similiar a la de una \emph{regla} de Prolog (ver sección \ref{sec:reglas}):
 \begin{equation*} 
 h \leftarrow (b_1 \land \cdots \land b_n)
 \end{equation*}
@@ -332,7 +332,7 @@ padre(zeus, artemisa).
 
 \subsection{Consultas (Queries)}
 
-Otro tipo de proposición en Prolog son las consultas, o \emph{queries}, que sirven para extraer información de un programa lógico. Las queries se \emph{ejecutan} sobre un programa, es decir, se resuelven a partir de los axiomas definidos en él. En la programción lógica en general se las conoce como \emph{proposición objetivo} (\ref{sec:programaslogicos})
+Otro tipo de proposición en Prolog son las consultas, o \emph{queries}, que sirven para extraer información de un programa lógico. Las queries se \emph{ejecutan} sobre un programa, es decir, se resuelven a partir de los axiomas definidos en él. En la programación lógica en general se las conoce como \emph{proposición objetivo} (\ref{sec:programaslogicos})
 
 Un ejemplo de query sobre el programa antes visto de los dioses griegos (\ref{lst:diosesgriegos}) podría ser \lstinline|padre(zeus, apolo)|, que, al ejecutarlo\footnote{Los sistemas Prolog en general proveen un ambiente interactivo para ejecutar queries sobre programas. En este trabajo práctico se utilizó la implementación de SWI Prolog.}, el sistema informa que se cumple devolviendo \emph{true}:
 %\begin{lstlisting}[basicstyle=\color{green}\ttfamily\small,backgroundcolor=\color{black!70}]
