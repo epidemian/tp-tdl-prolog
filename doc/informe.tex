@@ -66,7 +66,16 @@ pdfborder= 0 0 0
     %frame=single               % Un recuadro en los listings.
 }
 
+% Para fórmulas matemáticas.
 \usepackage{amssymb,amsmath}
+
+% Para pseudocódigo. Instalar texlive-science.
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
+% Para poder hacer \begin{Verbatim}[samepage=true]
+\usepackage{fancyvrb}
+
 
 % Son necesarios?
 %\usepackage{float}
@@ -572,6 +581,7 @@ tercer_elemento(X, [_,_,X|_]).
 El patrón \lstinline$[_,_,X|_]$ matchea con cualquier lista de tres elementos o más que tenga \lstinline|X| como tercer elemento.
 
 \subsubsection*{Reglas Recursivas}
+\label{sec:reglasrecursivas}
 
 Al ser las listas una estructura recursiva en sí mismas, es natural que suelan utilizarse reglas recursivas para definir propiedades sobre ellas. Un ejemplo títpico es el predicado \lstinline|pertenece/2|:
 \begin{lstlisting}
@@ -641,16 +651,288 @@ L = [_G287, _G290, _G293, _G296, _G299, 5|_G303] .
 \end{lstlisting}
 
 Este último caso resulta interesante. Las soluciones son infinitas\footnote{Pero por suerte SWI Prolog requiere que el usuario vaya apretando \emph{n} para ir calculando cada solución en vez de intentar calcularlas todas.}, y la forma de cada solución es una lista con un 5. La primer solución es una lista de al menos un elemento, un 5; su cola puede ser una lista arbitraria y eso es lo que representa ese nombre poco-feliz. La segunda solución es una lista de al menos dos elementos, el primero de un valor arbitrario y el segundo un 5. Y así sucesivamente\dots
-\newpage
-\section{Modelo de ejecución de Prolog}
-% Ver página 35 del libro
-
-\subsection{Algoritmo de backtracking}
-\subsection{Seguimiento de factorial}
-    Algún otro ejemplo? (el de ancestro es copado para hacer un seguimiento =P)
 
 \newpage
-\section{Ejemplos complejos}
+\section{Modelo de Ejecución de Prolog}
+% Ver página 32 y 67 del libro
+
+Hasta ahora se crearon programas y realizaron queries de forma ``intuitiva''. Para crear programas más complejos es necesario conocer el modelo de ejecución de Prolog con mayor detalle.
+
+\subsection{Unificación}
+
+El concepto de unificación en Prolog es lo que hasta ahora, informalmente, se había llamado pattern matching. Se dice, por ejemplo, que el predicado \lstinline$a(2, [2,3,4])$ \emph{unifica} con \lstinline$a(X,[X|Xs])$ usando la sustitución (\emph{binding}) \lstinline|X=2|, \lstinline|Xs=[3,4]|.
+
+\subsection{Objetivos}
+
+Un objetivo es un predicado que se quiere verificar, es decir, para el que se quiere hayar una solución. Cuando se ejecuta una query, ésta es procesada como un objetivo, pero para su resolución es probable que el motor de inferencia genere otros objetivos a probar, es por eso que se usa el término general ``objetivo'' para denotar ``lo que se quiere resolver''.
+
+\subsection{Ejemplos}
+
+La forma más sencilla de entender cómo Prolog resulve las consultas es mediante ejemplos de ejecuciones. Se estudiarán los \emph{árboles de derivación} de distintas ejecuciones y se analizará el arloritmo de \emph{backtracking}.
+
+Para ejemplificar cómo Prolog resuelve las queries, se volverá a recurrir al programa de los dioses griegos. El programa completo que se utilizará en esta sección es:
+\begin{lstlisting}
+padre(urano, cronos).
+padre(cronos, hades).
+padre(cronos, poseidon).
+padre(cronos, zeus).
+padre(zeus, apolo).
+padre(zeus, artemisa).
+
+hijo(A, B) :- padre(B, A).
+hermano(A, B) :- padre(X, A), padre(X, B), A \== B.
+
+familiar_cercano(A, B) :- padre(A, B).
+familiar_cercano(A, B) :- hijo(A, B).
+familiar_cercano(A, B) :- hermano(A, B).
+
+ancestro(A, B) :- padre(A, B).
+ancestro(A, B) :- padre(A, X), ancestro(X, B).
+\end{lstlisting}
+
+\subsubsection{Sólo hechos}
+
+Una query muy sencilla sobre el programa anterior es:
+\begin{lstlisting}
+?- padre(cronos, X).
+X = hades ;
+X = poseidon ;
+X = zeus.
+\end{lstlisting}
+
+Para resolverla, Prolog busca en el programa alguna regla (o hecho) que unifique con el objetivo \lstinline|padre(cronos,X)|. El orden en que Prolog busca las reglas no es arbitrario, es el orden en que fueron declaradas. En este caso, la primer regla que unifica con el objetivo es \lstinline|padre(cronos,hades)|, con la sustitución \lstinline|X=hades|; y al haber encontrado ya una solución que verifica la query, Prolog devuelve este resultado. 
+
+Si se le pide un siguiente resultado, Prolog deberá \emph{volver hacia atrás} en la cadena de derivación hasta el punto que haya tenido alguna regla alternativa. Ésto es lo que se conoce como \emph{backtracking}. En este caso volver atrás significa descartar la sustitución \lstinline|X=hades| volver a intentar probar el objetivo \lstinline|padre(cronos,X)| con otra regla, y así el proceso se repite hasta encontrar todas las soluciones.
+
+El árbol de derivación para este ejemplo sencillo es:
+\begin{Verbatim}[samepage=true]
+       padre(cronos,X)
+    _________|_________
+   |         |         |
+X=hades  X=poseidon  X=zeus
+ true      true       true
+\end{Verbatim}
+
+\subsubsection{Regla simple}
+
+Cuando la regla que unifica con objetivo a probar es una regla propiamente dicha (en vez de un hecho), Prolog sustituye las variables del objetivo en la regla y toma como nuevo objetivo el cuerpo de la regla. Es decir, intenta probar que el cuerpo de la regla se cumpla.
+
+Por ejemplo, para la query:
+\begin{lstlisting}
+?- hijo(X, zeus).
+X = apolo ;
+X = artemisa.
+\end{lstlisting}
+
+El árbol de derivación sería:
+\begin{Verbatim}[samepage=true]
+   hijo(X,zeus)
+        |
+   padre(zeus,X)
+    ____|____
+   |         |
+X=apolo  X=artemisa
+ true       true
+\end{Verbatim}
+
+Otro modo de ver cómo es que se resuelve esta query es observando un \emph{trace}\footnote{En SWI Prolog, ejecutando \lstinline|trace.| en la consola interactiva.} de la misma:
+\begin{Verbatim}[fontsize=\small]
+[trace]  ?- hijo(X, zeus).
+   Call: (6) hijo(_G732, zeus) ? creep
+   Call: (7)   padre(zeus, _G732) ? creep
+   Exit: (7)   padre(zeus, apolo) ? creep
+   Exit: (6) hijo(apolo, zeus) ? creep
+X = apolo ;
+   Redo: (7)   padre(zeus, _G732) ? creep
+   Exit: (7)   padre(zeus, artemisa) ? creep
+   Exit: (6) hijo(artemisa, zeus) ? creep
+X = artemisa.
+\end{Verbatim}
+
+Nota: la indentación se agregó para mayor legibilidad. El nivel de anidamiento de las llamadas está indicado por los números entre paréntesis.
+
+Las variables intermedias como \lstinline|_G732| aparecen a causa de sustituciones. En este caso \lstinline|_G732| está bindeada a \lstinline|X|, por lo cual, cuando se termina bindeando \lstinline|apolo| a la misma, \lstinline|X| termina también bindeada a \lstinline|apolo|.
+
+Las lineas del trace que comienzan con \lstinline|Call| son evaluaciones de un objetivo y las que comienzan con \lstinline|Exit| son resoluciones exitosas de un objtivo.
+
+\subsubsection{Regla compuesta y búsqueda}
+
+Cuando un objetivo no se puede probar, es decir que falla, Prolog vuelve hacia atrás en la cadena de derivación hasta el punto en que tenía alguna opción para probar con otra regla. En caso de no poder volver más hacia atrás (i.e. llegar hasta la raiz del árbol de derivación), la query no tendrá más resultados y se imprimirá \emph{false}.
+
+Por ejemplo, considérese la siguiente query:
+\begin{lstlisting}
+?- hermano(artemisa, X).
+X = apolo ;
+false.
+\end{lstlisting}
+
+El \lstinline|false| aparece porque luego de llegar a la solución \lstinline|X=apolo| todavía existían caminos sin tomar en el árbol de derivación. Cuando se le pidió seguir calculando soluciones, el intérprete evaluó estos caminos y se encontró que ninguno arrojaba una solución.
+
+El árbol de derivación tiene la forma:
+\begin{Verbatim}[samepage=true,fontsize=\small]
+            hermano(artemisa,X)
+                     |
+padre(Y,artemisa), padre(Y,X), artemisa \== X.
+                     |
+                   Y=zeus
+        padre(zeus, X), artemisa \== X.
+                     |             
+             ________|___________
+            |                    |
+         X=apolo             X=artemisa
+    artemisa \== apolo  artemisa \== artemisa
+           true                false
+\end{Verbatim}
+
+Puede observarse que para probar un objetivo compuesto, se van probando sus predicados en orden. Si alguno de estos no se puede verificar, el objetivo entero falla.
+
+\subsubsection{``Conveniencia'' de una query sobre otra}
+
+Considérese la query:
+\begin{lstlisting}
+?- hermano(X, artemisa).
+X = apolo ;
+false.
+\end{lstlisting}
+
+Si bien los resultados son idénticos a los del ejemplo anterior (pues el predicado \lstinline|hermano/2| es ``conmutativo''), el árbol de derivación resulta bastante más complejo:
+\begin{Verbatim}[samepage=true,fontsize=\tiny]
+            hermano(X,artemisa)
+                     |
+padre(Y,X), padre(Y,artemisa), X \== artemisa.
+                     |
+   __________________|_________________________________________________________________________________________________
+  |                      |                       |                       |                       |                     |
+Y=urano,X=cronos       Y=cronos,X=hades        Y=cronos,X=poseidon     Y=cronos,X=zeus         Y=zeus,X=apolo        Y=zeus,X=artemisa
+padre(urano,artemisa), padre(cronos,artemisa), padre(cronos,artemisa), padre(cronos,artemisa), padre(zeus,artemisa), padre(zeus,artemisa),
+cronos \== artemisa.   hades \== artemisa.     poseidon \== artemisa.  zeus \== artemisa.      apolo \== artemisa.   artemisa \== artemisa.
+false                  false                   false                   false                   true                  false
+\end{Verbatim}
+
+Esto ocurre porque se intenta probar el objetivo \lstinline|padre(Y,X)|, con lo cual se terminan evaluando todos los 6 hechos para \lstinline|padre/2|.
+
+\subsubsection{Reglas múltiples}
+
+Considérese la query:
+\begin{lstlisting}
+?- familiar_cercano(artemisa, X).
+X = zeus ;
+X = apolo ;
+false.
+\end{lstlisting}
+
+El árbol de derivación resulta:
+\begin{Verbatim}[samepage=true,fontsize=\small]
+            familiar_cercano(artemisa,X)
+                     |
+        _____________|___________________________
+       |                   |                     |
+padre(artemisa,X)  hijo(artemisa,X)      hermano(artemisa,X)
+     false                 |                     |
+                   padre(X,artemisa)   idem al ejemplo 3...
+                           |
+                         X=zeus
+                          true
+\end{Verbatim}
+
+Si los argumentos en la consulta se darían vuelta
+\begin{lstlisting}
+?- familiar_cercano(X, artemisa).
+X = zeus ;
+X = apolo ;
+false.
+\end{lstlisting}
+Se obtendría un árbol de derivación distinto y se observaría el mismo comportamiento que en el ejemplo 4.
+
+\subsubsection{Recursividad: listas}
+
+Para el ejemplo de reglas recursivas, se recurrirá al ya conocido predicado \lstinline|pertenece/2| (ver sección \ref{sec:reglasrecursivas}), definido como:
+\begin{lstlisting}
+pertenece(X,[X|_]).
+pertenece(X,[_|Xs]) :- pertenece(X,Xs).
+\end{lstlisting}
+
+La consulta:
+\begin{lstlisting}
+?- pertenece(2,[1,2,3]).
+true ;
+false.
+\end{lstlisting}
+
+Se resuelve con el siguiente árbol de derivación:
+\begin{Verbatim}[samepage=true,fontsize=\small]
+        pertenece(2,[1,2,3])
+                 |
+         pertenece(2,[2,3])
+        _________|_________
+       |                   |
+      true          pertenece(2,[3])
+                           |       
+                    pertenece(2,[])
+                         false
+\end{Verbatim}
+
+Puede observarse que, por más que la query se verifique con \lstinline|pertenece(2,[2,3])| por el primer hecho, el algoritmo de backtracking sigue ejecutándose, pues \lstinline|pertenece(2,[2,3])| también unifica con la cabecera de la segunda regla \lstinline$pertenece(X,[_|Xs])$. Y es por ello el resultado de la query termina con un \lstinline|false|. Eso quiere decir que si hay varias apariciones del elemento en la lista, la query devolverá varios \lstinline|true|s;
+\begin{lstlisting}
+?- pertenece(2,[2,1,2,3,2]).
+true ;
+true ;
+true ;
+false.
+\end{lstlisting}
+
+Esto puede parecer absurdo, pero no lo és. Si para el usuario es suficiente con que la query se verifique una vez, él puede optar por detener la búsqueda de más soluciones. Éste comportamiento del algoritmo de backtracking es el que permite obtener, por ejemplo, todos los elementos que pertenecen a una lista, con la query:
+\begin{lstlisting}
+?- pertenece(X,[1,2,3]).
+X = 1 ;
+X = 2 ;
+X = 3 ;
+false.
+\end{lstlisting}
+
+El árbol de derivación, en este caso, sería:
+\begin{Verbatim}[samepage=true,fontsize=\small]
+pertenece(X,[1,2,3])
+      |
+  ____|_____      
+ |          |
+X=1   pertenece(X,[2,3])
+true    ____|_____      
+       |          |
+      X=2   pertenece(X,[3])
+      true        |
+              ____|_____      
+             |          |
+            X=3    pertenece(X,[])
+            true      false
+\end{Verbatim}
+
+\subsubsection{Operador \lstinline|!|}
+
+A veces es necesario ``cortar'' el backtracking cuando ya se llegó a una solución. Quizá porque sólo initeresa obtener una solución, o quizá porque sólo existe una y se sigue buscando se caería en un loop infinito.
+
+Por ejemplo, si se quiere que el backtracking corte al encontrar una solución que cumpla con \lstinline|pertenece/2|, se puede hacer:
+\begin{lstlisting}
+pertenece(X,[X|_]) :- !.
+pertenece(X,[_|Xs]) :- pertenece(X,Xs).
+\end{lstlisting}
+
+El operador \lstinline|!| siempre se verifica, y al evaluarse le indica al algoritmo de backtracking que debe dejar de buscar soluciones. Una query booleana, entonces, terminará ni bien se verifique:
+\begin{lstlisting}
+?- pertenece(2,[1,2,3]).
+true.
+\end{lstlisting}
+
+Pero una query existencial también terminará ni bien se encuentre una solución, con lo cual \lstinline|pertenece/2| deja de ser útil para conocer todos los elementos de una lista:
+\begin{lstlisting}
+?- pertenece(X,[1,2,3]).
+X = 1.
+\end{lstlisting}
+
+\subsubsection{Recursividad: factorial}
+
+\newpage
+\section{Ejemplos Interesantes}
 
 Vemos a continuación dos ejemplos más completos.
 
@@ -785,4 +1067,4 @@ Esta función devuelve \textit{true} si se cumplen todas las condiciones enumera
 
 
 
-
+t
