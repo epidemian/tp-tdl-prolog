@@ -6,6 +6,8 @@
 
 % Paquetes:
 
+\usepackage[T1]{fontenc}
+
 %Para comentarios multilínea.
 \usepackage{verbatim}
 
@@ -191,7 +193,7 @@ Si bien el propósito de las computadoras es ser usadas por personas, la dificul
 
 Las computadoras modernas están basadas en la arquitectura de von Neumann \cite{vonneumann}, el la cual un programa consiste en una serie de instrucciones que operan sobre registros y que se ejecutan una tras otra, pudiendo la ejecución de una instrucción influir en qué ejecución se ejecute a continuación.
 
-A medida que los programas se hicieron más complejos, se necesitó más esfuerzo para traducir los conceptos que se querían modelar a un lenguaje que las computadoras pudieran interpretar, es decir \emph{programar} se volvió más complejo. Para aliviar este problema se crearon lenguajes con mayor poder de abstracción, capaces de expresar las ideas del progrmador de forma más directa. Partiendo desde el lenguaje ensamblador, y pasando por C, Pascal, Java y muchos otros, todos estos lenguajes son derivados de la arquitectura de von Neumann, y por lo tanto comparten el mismo modelo subyacente de ejecución. Este paradigma de programción es el que se conoce como la \emph{programación imperativa}.
+A medida que los programas se hicieron más complejos, se necesitó más esfuerzo para traducir los conceptos que se querían modelar a un lenguaje que las computadoras pudieran interpretar, es decir \emph{programar} se volvió más complejo. Para aliviar este problema se crearon lenguajes con mayor poder de abstracción, capaces de expresar las ideas del programador de forma más directa. Partiendo desde el lenguaje ensamblador, y pasando por C, Pascal, Java y muchos otros, todos estos lenguajes son derivados de la arquitectura de von Neumann, y por lo tanto comparten el mismo modelo subyacente de ejecución. Este paradigma de programción es el que se conoce como la \emph{programación imperativa}.
 
 Si bien la lógica se usó como una herramienta para diseñar computadoras y programas desde sus comienzos, su uso directo como lenguaje de progrmación, lo cual se conoce como \emph{programación lógica}, se plantea mucho después \footnote{Finales de la década del 60 o principios de la del 70.} como alternativa a la programción imperativa.
 
@@ -347,7 +349,7 @@ false.
 
 Se puede observar que cuando la proposición no se cumple, el resultado es \emph{false}. En este caso, la sintaxis de las queries resulta idéntica a la de los hechos; la diferencia radica en que los hechos se escriben en el programa, mientras que las queries se ejecutan en el el ambiente interactivo de Prolog, el cual antepone \lstinline|?-| en cada linea para diferenciarlas de los resultados.
 
-Este es el tipo más sencillo de queries, es decir, verificar si se cumple un predicado a partir de hechos. Mediante se presenten nuevas construcciones del lenguaje se mostrarán queries más complejas.
+Este es el tipo más sencillo de queries, es decir, verificar si se cumple un predicado a partir de hechos. A medida que se presenten nuevas construcciones del lenguaje se mostrarán queries más complejas.
 
 \subsection{Variables}
 
@@ -409,7 +411,7 @@ Es decir, todas las ternas de individuos $\{X,A,B\}$ tales que $X$ sea padre de 
 
 \subsubsection*{Hechos Universales}
 
-Las variables también peuden ser usadas en hechos para definir \emph{hechos universales}. Por ejemplo, si se tiene un predicado \lstinline|gusta/2|\footnote{El \lstinline|/2| define la aridad de un predicado. Ver sección (\ref{sec:datos}).} que indica qué le gusta a cada persona:
+Las variables también pueden ser usadas en hechos para definir \emph{hechos universales}. Por ejemplo, si se tiene un predicado \lstinline|gusta/2|\footnote{El \lstinline|/2| define la aridad de un predicado. Ver sección (\ref{sec:datos}).} que indica qué le gusta a cada persona:
 \begin{lstlisting}
 gusta(lucas, programar).
 gusta(juan, dormir).
@@ -459,7 +461,7 @@ Es equivalente a una regla que se cumple siempre:
 gusta(X, chocolate) :- true.
 \end{lstlisting}
 
-Es importante notar que el cuerpo de una regla es una conjunción lógica (operador \emph{and}). Eso quiere decir, entonces, que la cabeza de una regla es consecia de que se cumplan \emph{todos} los predicados del cuerpo. A veces es deseable plantear que un predicado se cumpla por más de una condición, es decir una disjunción lógica (\emph{or}). Por ejemplo, para modelar la relación ``familiar cercano'' entre dos individuos, $A$ y $B$, que se cumple si ambos son hermanos, o si son padre e hijo, es necesario plantear una disjunción. En Prolog, si bien existen otras formas de hacerlo\footnote{Así como el operador \lstinline|,/2| (la coma) denota una conjunción, el operador \lstinline|;/2| deonta una disjunción, pero no se recomienda su uso, al menos al programador Prolog principiante, ya que puede llevarlo a escribir reglas demasido complejas y no entender bien la idea de que un predicado puede definirse a partir de varias relgas.}, se estila modelar esto usando simplemente múltimples reglas:
+Es importante notar que el cuerpo de una regla es una conjunción lógica (operador \emph{and}). Eso quiere decir, entonces, que la cabeza de una regla es consecuencia de que se cumplan \emph{todos} los predicados del cuerpo. A veces es deseable plantear que un predicado se cumpla por más de una condición, es decir una disjunción lógica (\emph{or}). Por ejemplo, para modelar la relación ``familiar cercano'' entre dos individuos, $A$ y $B$, que se cumple si ambos son hermanos, o si son padre e hijo, es necesario plantear una disjunción. En Prolog, si bien existen otras formas de hacerlo\footnote{Así como el operador \lstinline|,/2| (la coma) denota una conjunción, el operador \lstinline|;/2| deonta una disjunción, pero no se recomienda su uso, al menos al programador Prolog principiante, ya que puede llevarlo a escribir reglas demasido complejas y no entender bien la idea de que un predicado puede definirse a partir de varias relgas.}, se estila modelar esto usando simplemente múltiples reglas:
 \begin{lstlisting}
 familiar_cercano(A, B) :- padre(A, B).
 familiar_cercano(A, B) :- padre(B, A).
@@ -477,7 +479,7 @@ X = apolo .
 \subsection{Tipos de Datos}
 \label{sec:datos}
 
-Prolog posee un tipo de dato unificado: el \emph{término}. Existen términos simples: los átmos, variables y numerales; y términos compuestos.
+Prolog posee un tipo de dato unificado: el \emph{término}. Existen términos simples: los átomos, variables y numerales; y términos compuestos.
 
 \begin{itemize}
     \item Un \textbf{átomo} es simplemente un identificador. No tiene un sentido matemático como los números o las listas. Se escribe como una cadena de caracteres alfanuméricos comenzando con minúscula o entre comillas simples (estos últimos pueden contener espacios y comenzar con mayúscula). Algunos ejemplos de átomos: \lstinline|a|, \lstinline|lunes|, \lstinline|'Teoria de Lenguajes'|.
@@ -489,7 +491,7 @@ Prolog posee un tipo de dato unificado: el \emph{término}. Existen términos si
 \subsection{Recursividad}
 \label{sec:recursividad}
 
-Hasta ahora, usando hechos y reglas simples se pudieron definir algunos programas con capacidades de inferencia medianmente interesantes. Pero este tipo de programas no es suficiente para representar un tipo de relaciones muy interesante: las que se definen en base a sí mismas.
+Hasta ahora, usando hechos y reglas simples se pudieron definir algunos programas con capacidades de inferencia medianamente interesantes. Pero este tipo de programas no es suficiente para representar un tipo de relaciones muy interesante: las que se definen en base a sí mismas.
 
 A modo de ejemplo, se volverá a utilizar como base el programa de los dioses griegos (\ref{lst:diosesgriegos}). Esta vez se desea representar la relación ``ancestro'' . Una forma ingenua de encarar este problema sería:
 \begin{lstlisting}
@@ -545,7 +547,7 @@ Las listas en Prolog pueden definirse, como en muchos lenguajes funcionales, de 
   \end{array} \right.
 \]
 
-En Prolog, la lista vacía se denota \lstinline|[]|, y una lista conformada por un elemento \lstinline|H| seguido por una lista \lstinline|T| se denota \lstinline$[H|T]$. La elección de nombres \lstinline|H| y \lstinline|T| es en referencia a la convención utilizada generalmente en la programción funcional para referirse al primer elemento de una lista como la \emph{cabeza} (\emph{head}) y al resto como la \emph{cola} (\emph{tail}), y al operador \lstinline$|/2$ como \emph{operador concatenación}. 
+En Prolog, la lista vacía se denota \lstinline|[]|, y una lista conformada por un elemento \lstinline|H| seguido por una lista \lstinline|T| se denota \lstinline$[H|T]$. La elección de nombres \lstinline|H| y \lstinline|T| es en referencia a la convención utilizada generalmente en la programción funcional para referirse al primer elemento de una lista como la \emph{cabeza} (\emph{head}) y al resto como la \emph{cola} (\emph{tail}), y al operador \lstinline$|/2$ (símbolo ``pipe'' con aridad 2) como \emph{operador concatenación}. 
 
 Así, la lista con los elementos \lstinline|1|, \lstinline|2| y \lstinline|3| podría escribirse como \lstinline$[1|[2|[3|[]]]]$, pero por suerte existe una notación más conveniente: \lstinline|[1,2,3]|.
 
@@ -1005,7 +1007,23 @@ A continuación se verán dos ejemplos más interesantes.
 Se tiene un stock de 10 monedas de cada tipo, a saber: 5 centavos, 10 centavos, 25 centavos, 50 centavos, y 1 peso. Es decir, en total se cuenta con 50 monedas. Además, se puede pedir cambio de cualquiera de estos billetes: 2,5,10,20,50, o 100 pesos.
 
 El código fuente del programa es el siguiente:
-\lstinputlisting{../src/cambio.pl}
+\begin{lstlisting}
+pertenece(X,[X|_]).
+pertenece(X,[_|R]) :- pertenece(X,R).
+
+stock(X) :- pertenece(X,[0,1,2,3,4,5,6,7,8,9,10]).
+billetes(X) :- pertenece(X,[2,5,10,20,50,100]).
+
+cambio(Billete,Peso,Cincuenta,Veinticinco,Diez,Cinco) :-
+	stock(Peso),
+	stock(Cincuenta),
+	stock(Veinticinco),
+	stock(Diez),
+	stock(Cinco),
+	billetes(Billete),
+	100*Billete =:= 100*Peso + 50*Cincuenta + 
+	                25*Veinticinco + 10*Diez + 5*Cinco.
+\end{lstlisting}
 
 Luego de compilar el programa, vamos a hacer unas pruebas, y a partir de ahí vamos a razonar el funcionamiento del programa:
 
@@ -1087,7 +1105,7 @@ stock(X) :- pertenece(X,[0,1,2,3,4,5,6,7,8,9,10]).
 billetes(X) :- pertenece(X,[2,5,10,20,50,100]).
 \end{lstlisting}
 
-Vemos la regla \textit{stock(X)}. Esta regla se puede leer como ``stock(X) es verdadero si X es miembro de la lista formada por números del 1 al 10''. Es decir, si X es un número de 1 a 10, \textit{hay stock de X}. La misma regla se aplica para billetes, solo que en este caso X puede tomar los valores mencionados anteriormente.
+Vemos la regla \textit{stock(X)}. Esta regla se puede leer como ``stock(X) es verdadero si X pertenece a la lista formada por números del 1 al 10''. Es decir, si X es un número de 1 a 10, \textit{hay stock de X}. La misma regla se aplica para billetes, solo que en este caso X puede tomar los valores mencionados anteriormente.
 
 La función ``cambio'':
 
@@ -1099,16 +1117,87 @@ cambio(Billete,Peso,Cincuenta,Veinticinco,Diez,Cinco) :-
         stock(Diez),
         stock(Cinco),
         billetes(Billete),
-        100*Billete =:= 100*Peso + 50*Cincuenta + 25*Veinticinco + 10*Diez + 5*Cinco.
+        100*Billete =:= 100*Peso + 50*Cincuenta + 
+                        25*Veinticinco + 10*Diez + 5*Cinco.
 \end{lstlisting}
 
-Esta función devuelve \textit{true} si se cumplen todas las condiciones enumeradas. Primero, que haya \textit{stock} de monedas, de un peso, cincuenta centavos, veinticinco, 10 , y cinco centavos. Luego, que el billete ingresado tome uno de los valores válidos, a saber, 2,5,10,20,50, o 100. Por último, la condición más importante, que la suma de las monedas sea igual, en valor monetario, al valor del billete.
+Esta función devuelve \textit{true} si se cumplen todas las condiciones enumeradas. Primero, que haya \textit{stock} de monedas, de un peso, cincuenta centavos, veinticinco, 10 , y cinco centavos. Luego, que el billete ingresado tome uno de los valores válidos, a saber, 2, 5, 10, 20, 50, o 100. Por último, la condición más importante, que la suma de las monedas sea igual, en valor monetario, al valor del billete.
 
 \subsection{N Reinas}
+
+El programa ``N Reinas'' calcula todas las soluciones al problema de las N Reinas\cite{nreinas}, es decir, las cómo posicionar $n$ reinas en un tablero de ajedrez de $n \times n$. El código entero del programa es:
+\begin{lstlisting}
+generar(0, []).
+generar(N, Sec) :- N > 0, N1 is N - 1, generar(N1, Sec1), 
+        append(Sec1, [N], Sec).
+
+reina_no_choca(Col, Cols) :- reina_no_choca(Col, 1, Cols).
+reina_no_choca(_,_,[]).
+reina_no_choca(Col, Fila, [Otra_col|Otras_cols]) :-
+        Diag_1 is Col + Fila, Otra_col =\= Diag_1,
+        Diag_2 is Col - Fila, Otra_col =\= Diag_2,
+        Fila1 is Fila + 1,
+        reina_no_choca(Col, Fila1, Otras_cols).
+
+
+tablero_valido([]).
+tablero_valido([Col|Cols]) :- reina_no_choca(Col, Cols), 
+        tablero_valido(Cols).
+
+permutacion([], []).
+permutacion([X|Xs], Zs) :- permutacion(Xs, Ys), 
+        insertar(X, Ys, Zs).
+
+insertar(X, Xs, [X|Xs]).
+insertar(X, [Y|Ys], [Y|Zs]) :- insertar(X, Ys, Zs).
+
+solucion(N, Tablero) :- generar(N, Inicial), 
+        permutacion(Inicial, Tablero), tablero_valido(Tablero).
+
+% Codigo para imprimir el tablero.
+imprimir_tablero(_,[]).
+imprimir_tablero(N, [Col|Cols]) :- imprimir_fila(N, Col), nl, 
+        imprimir_tablero(N, Cols).
+imprimir_fila(0,_).
+imprimir_fila(N, Col_reina) :- N > 0, 
+        imprimir_casillero(Col_reina), 
+        N1 is N - 1, Col_reina1 is Col_reina - 1, 
+        imprimir_fila(N1, Col_reina1).
+imprimir_casillero(1) :- print('R').
+imprimir_casillero(N) :- N \== 1, print('-').
+
+imprimir_solucion(N) :- solucion(N, T), 
+        imprimir_tablero(N, T), nl.
+\end{lstlisting}
+
+\subsubsection{Pruebas}
+\subsubsection{Análisis del Código Fuente}
 
 \newpage
 \section{Conclusiones}
 
+\newpage
+\appendix
+\section{N Reinas en Python}
+\label{sec:nreinaspython}
+
+Gracias a la expresividad y la grán cantidad de funciones built-in de Python\footnote{\url{http://python.org/}}, se puede programar, en muy pocas lineas de una forma muy directa, una solución al problema de N Reinas, aunque Python no cuente con un motor de inferencia integrado para hacer el backtracking.
+
+\begin{lstlisting}[language=Python]
+from itertools import permutations
+
+def n_reinas(n):
+    return (t for t in permutations(range(n)) if es_solucion(t))
+    
+def es_solucion(t):
+    diags = set(fila + col for fila, col in enumerate(t))
+    diags2 = set(fila - col for fila, col in enumerate(t))
+    return len(diags) == len(diags2) == len(t)
+
+# Imprime todas las soluciones al problema de las N Reinas para N = 8.        
+for t in n_reinas(8):
+    print(t)
+\end{lstlisting}
 
 \clearpage
 \begin{thebibliography}{9}
@@ -1119,7 +1208,8 @@ Esta función devuelve \textit{true} si se cumplen todas las condiciones enumera
     \bibitem{horn_clauses} \emph{Horn Clauses}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Horn_clauses}
     \bibitem{kowalski} Robert Kowalski, \emph{Predicate Logic as Programming Language}. IEEE Computer Society Press, 1986.
     \bibitem{hist1} \emph{Historia de Prolog}, \url{http://prolog6.tripod.com/historia.htm}
-\end{thebibliography}
+    \bibitem{nreinas} \emph{Eight queens puzzle}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Eight_queens_puzzle}
+\end{thebibliography} 
 
 % ------------------------------ Fin del tp -------------------------------
 
