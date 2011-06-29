@@ -931,10 +931,72 @@ X = 1.
 
 \subsubsection{Recursividad: factorial}
 
+A parte de las reglas recursivas para conjuntos finitos (como \lstinline|ancestro/2|) y la recursividad de listas, en Prolog también se pueden hacer reglas con recursividad aritmética (o cualquier combinación de esas cosas). Y qué mejor ejemplo de la recursividad artimética que el factorial?
+
+La definición matemática de la función factorial es:
+\[
+n!=\left\{
+  \begin{array}{ll}
+    1 & \text{si } n=0 \\
+    n*(n-1)! & \text{si } n>0
+  \end{array}
+\right.
+\]
+
+Su taducción a Prolog resulta bastante sencilla:
+\begin{lstlisting}
+factorial(0, 1).
+factorial(N, F) :- N > 0, N1 is N - 1, 
+                   factorial(N1, F1), F is N * F1.
+\end{lstlisting}
+
+El operador \lstinline|is| sólo bindea una variable a un valor. La primer proposición hace de condición de corte: el factorial de 0 es 1. La segunda proposición es la que se encarga de la generalización del factorial: calcula el factorial de \lstinline|N - 1| en una variable \lstinline|F1| y luego asocia \lstinline|F| (el resultado del factorial) a \lstinline|N * F1|.
+
+La correctitud de la definición puede probarse haciendo algunas queries:
+\begin{lstlisting}
+?- factorial(5,120).
+true ;
+false.
+
+?- factorial(3, 4).
+false.
+
+?- factorial(-1, X).
+false.
+
+?- factorial(3, X).
+X = 6 ;
+false.
+
+?- factorial(30, X).
+X = 265252859812191058636308480000000 ;
+false.
+\end{lstlisting}
+
+El árbol de derivación para \lstinline|factorial(3,X)| es:
+\begin{Verbatim}[samepage=true,fontsize=\small,commandchars=\\\{\}]
+                    factorial(3, X)
+                          |
+3 > 0, N1 is 3 - 1, factorial(2, X1), X is 3 * X1
+true   N1 is 2            |           X is 3 * 2
+                          |           \fbox{X is 6}
+                          |
+2 > 0, N1 is 2 - 1, factorial(1, X2), X1 is 2 * X2
+true   N1 is 1            |           X1 is 2 * 1
+                          |           X1 is 2
+                          |
+1 > 0, N1 is 1 - 1, factorial(0, X3), X2 is 1 * X3
+true   N1 is 0            |           X2 is 1 * 1
+                          |           X2 is 1
+                          |
+                    factorial(0, 1)
+                         true
+\end{Verbatim}
+
 \newpage
 \section{Ejemplos Interesantes}
 
-Vemos a continuación dos ejemplos más completos.
+A continuación se verán dos ejemplos más interesantes.
 
 \subsection{Cambio}
 
