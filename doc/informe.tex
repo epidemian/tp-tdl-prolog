@@ -1022,8 +1022,6 @@ cambio(Billete,Peso,Cincuenta,Veinticinco,Diez,Cinco) :-
 	                25*Veinticinco + 10*Diez + 5*Cinco.
 \end{lstlisting}
 
-Luego de compilar el programa, vamos a hacer unas pruebas, y a partir de ahí vamos a razonar el funcionamiento del programa:
-
 \subsubsection{Pruebas}
 
 \begin{itemize}
@@ -1040,16 +1038,16 @@ Otro ejemplo, podría ser si se puede cambiar un billete de \$2 por 2 monedas de
 false.
 \end{lstlisting}
 
-Vemos que una utilidad del programa es verificar una propuesta de cambio es correcta, o no.
+Una utilidad del programa es verificar una propuesta de cambio es correcta, o no.
 
- \item \textbf{Prueba con variables}: Ahora, en vez de pasarle valores a la funciones, y que la misma nos conteste si esa condición verifica o no, es decir, si corresponde a un modelo válido o no, vamos a pasarle variables, para que el modelo nos indique \textit{para que valores} se verifica. Hay que tener en cuenta, que al pasar las variables, la solución no es necesariamente única, sino que puede haber una, varias o ninguna solución.
+ \item \textbf{Prueba con variables}: Ahora, en vez de pasarle valores a la funciones, y que la misma conteste si esa condición verifica o no, es decir, si corresponde a un modelo válido o no, se le pasarán variables, para que el modelo indique \textit{para que valores} se verifica. Hay que tener en cuenta, que al pasar las variables, la solución no es necesariamente única, sino que puede haber una, varias o ninguna solución.
 
-En primer lugar, vamos a pedir cambio de cincuenta, sin restricciones:
+En primer lugar, se pide cambio de cincuenta, sin restricciones:
 \begin{lstlisting}
 ?- cambio(50,Peso,Cincuenta,Veinticinco,Diez,Cinco).
 false.
 \end{lstlisting}
-Devuelve \textit{false}, eso quiere decir que no encontró ninguna solución posible. Esto es bastante lógico, ya que nos limita el stock de monedas: aún devolviendole todas, no vamos a poder llegar a juntar 50 pesos.
+Devuelve \textit{false}, eso quiere decir que no encontró ninguna solución posible. Esto es bastante lógico, ya que lo limita el stock de monedas: aún devolviendo todas las monedas, no podrá llegar a juntar 50 pesos.
 
 Veamos, ahora un ejemplo que tenga soluciones. Por ejemplo, pidiendo cambio de 5 pesos:
 \begin{lstlisting}
@@ -1060,7 +1058,7 @@ Veinticinco = 10,
 Diez = 10,
 Cinco = 10 
 \end{lstlisting}
-Acá vemos una solución posible. Sin embargo, el intérprete nos indica que no es la única. Apretando la tecla ``n'' vemos más soluciones:
+Acá se ve una solución posible. Sin embargo, el intérprete indica que no es la única. Apretando la tecla ``n'' se pueden ver más soluciones:
 \begin{lstlisting}
 Peso = 0,
 Cincuenta = 3,
@@ -1087,13 +1085,13 @@ Diez = 10,
 Cinco = 5 
 \end{lstlisting}
 
-Y así podríamos seguir un buen rato...
+Y así se podría seguir un buen rato...
 
 \end{itemize}
 
 \subsubsection{Análisis del Código Fuente}
 
-Veamos el código fuente por partes. En primer lugar, uno se podría preguntar a que se refiere esta parte del código:
+A cdontinuación se va a hacer un análisis del código fuente. En primer lugar, uno se podría preguntar a que se refiere esta parte del código:
 \begin{lstlisting}
 pertenece(X,[X|_]).
 pertenece(X,[_|R]) :- pertenece(X,R).
