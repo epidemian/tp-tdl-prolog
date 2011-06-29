@@ -957,8 +957,7 @@ El operador \lstinline|is| sólo bindea una variable a un valor. La primer propo
 La correctitud de la definición puede probarse haciendo algunas queries:
 \begin{lstlisting}
 ?- factorial(5,120).
-true ;
-false.
+true .
 
 ?- factorial(3, 4).
 false.
@@ -967,12 +966,10 @@ false.
 false.
 
 ?- factorial(3, X).
-X = 6 ;
-false.
+X = 6 .
 
 ?- factorial(30, X).
-X = 265252859812191058636308480000000 ;
-false.
+X = 265252859812191058636308480000000 .
 \end{lstlisting}
 
 El árbol de derivación para \lstinline|factorial(3,X)| es:
@@ -1125,7 +1122,7 @@ Esta función devuelve \textit{true} si se cumplen todas las condiciones enumera
 
 \subsection{N Reinas}
 
-El programa ``N Reinas'' calcula todas las soluciones al problema de las N Reinas\cite{nreinas}, es decir, las cómo posicionar $n$ reinas en un tablero de ajedrez de $n \times n$. El código entero del programa es:
+El programa ``N Reinas'' calcula todas las soluciones al problema de las $n$ reinas\cite{nreinas}, es decir, cómo posicionar $n$ reinas en un tablero de ajedrez de $n \times n$ de forma tal que no puedan comerse en el siguiente movimiento. El código entero del programa es:
 \begin{lstlisting}
 generar(0, []).
 generar(N, Sec) :- N > 0, N1 is N - 1, generar(N1, Sec1), 
@@ -1171,6 +1168,96 @@ imprimir_solucion(N) :- solucion(N, T),
 \end{lstlisting}
 
 \subsubsection{Pruebas}
+
+El predicado más importante del programa es \lstinline|solucion/2|, que verifica si un tablero es solución del problema de las $n$ reinas para un $n$ dado. Por ejemplo:
+\begin{lstlisting}
+?- solucion(4, [3,1,4,2]).
+true .
+\end{lstlisting}
+
+La representación del tablero es una lista de la forma $[r_1, r_2, \cdots, r_n]$ donde cada $r_i$ es el número de columna de la reina en la fila $i$-ésima. El tablero $[3,1,4,2]$, en \emph{ASCII-art} sería:
+\begin{verbatim}
+_________
+|_|_|R|_|
+|R|_|_|_|
+|_|_|_|R|
+|_|R|_|_|
+\end{verbatim}
+
+Que es una de las 2 soluciones al problema de las n reinas para $n=4$.
+
+$[3,1,2,4]$, en cambio, no es slución.
+
+\begin{verbatim}
+_________
+|_|_|R|_|
+|R|_|_|_|
+|_|R|_|_|
+|_|_|_|R|
+\end{verbatim}
+
+\begin{lstlisting}
+?- solucion(4, [3,1,2,4]).
+false.
+\end{lstlisting}
+
+También se pueden calcular las soluciones para un $n$ dado. $n=1$ tiene una solución trivial:
+\begin{lstlisting}
+?- solucion(1, T).
+T = [1] ;
+false.
+\end{lstlisting}
+
+$n=2$ y $n=3$ no tienen solución:
+\begin{lstlisting}
+?- solucion(2, T).
+false.
+
+?- solucion(3, T).
+false.
+\end{lstlisting}
+
+$n=4$ tine 2 soluciones.
+\begin{lstlisting}
+?- solucion(4, T).
+T = [3, 1, 4, 2] ;
+T = [2, 4, 1, 3] ;
+false.
+\end{lstlisting}
+
+Y $n=8$ tiene 92 soluciones.
+\begin{lstlisting}
+?- solucion(8, T).
+T = [5, 2, 6, 1, 7, 4, 8, 3] ;
+T = [6, 3, 5, 7, 1, 4, 2, 8] ;
+T = [6, 4, 7, 1, 3, 5, 2, 8] ;
+T = [3, 6, 2, 7, 5, 1, 8, 4] ;
+... otras 86 soluciones ...
+T = [3, 8, 4, 7, 1, 6, 2, 5] ;
+false.
+\end{lstlisting}
+
+También está el predicado \lstinline|imprimir_solucion/1|, que imprimie las soluciones para un $n$ dado en un formato más gráfico:
+\begin{lstlisting}
+?- imprimir_solucion(4).
+--R-
+R---
+---R
+-R--
+
+true ;
+-R--
+---R
+R---
+--R-
+
+true ;
+false.
+\end{lstlisting}
+
+Si bien Prolog es un lenguaje declarativo, también soporta algunas formas imperativas con \emph{side effect}, como, en este caso, imprimir algo en pantalla. El \emph{Prolog puro} es un subconjunto de Prolog que sólo soporta construcciones declarativas.
+
+
 \subsubsection{Análisis del Código Fuente}
 
 \newpage
