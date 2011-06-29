@@ -1,6 +1,5 @@
-generar(N, Sec) :- generar(N, [], Sec).
-generar(0, Acum, Acum) :- !.
-generar(N, Acum, Sec) :- N1 is N - 1, generar(N1, [N|Acum], Sec).
+generar(0, []).
+generar(N, Sec) :- N > 0, N1 is N - 1, generar(N1, Sec1), append(Sec1, [N], Sec).
 
 reina_no_choca(Col, Cols) :- reina_no_choca(Col, 1, Cols).
 reina_no_choca(_,_,[]).
@@ -22,12 +21,12 @@ insertar(X, [Y|Ys], [Y|Zs]) :- insertar(X, Ys, Zs).
 
 solucion(N, Tablero) :- generar(N, Inicial), permutacion(Inicial, Tablero), tablero_valido(Tablero).
 
-% Código fiero para imprimir el tablero.
+% Código para imprimir el tablero.
 imprimir_tablero(_,[]).
 imprimir_tablero(N, [Col|Cols]) :- imprimir_fila(N, Col), nl, imprimir_tablero(N, Cols).
-imprimir_fila(0,_) :- !.
-imprimir_fila(N, Col_reina) :- imprimir_casillero(Col_reina), N1 is N - 1, Col_reina1 is Col_reina - 1, imprimir_fila(N1, Col_reina1).
-imprimir_casillero(1) :- !,print('R').
-imprimir_casillero(_) :- print('-').
+imprimir_fila(0,_).
+imprimir_fila(N, Col_reina) :- N > 0, imprimir_casillero(Col_reina), N1 is N - 1, Col_reina1 is Col_reina - 1, imprimir_fila(N1, Col_reina1).
+imprimir_casillero(1) :- print('R').
+imprimir_casillero(N) :- N \== 1, print('-').
 
 imprimir_solucion(N) :- solucion(N, T), imprimir_tablero(N, T), nl.
