@@ -310,7 +310,7 @@ La programación Prolog es interactiva: un programa es un conjunto de hechos y r
 
 \subsection{Hechos}
 
-El tipo de proposición más simple en Prolog es el \emph{hecho}. Respresenta una verdad en un programa. Por ejemplo.
+El tipo de proposición más simple en Prolog es el \emph{hecho}. Respresenta una verdad en un programa. Por ejemplo:
 \begin{lstlisting}
 gato(felix).
 \end{lstlisting}
@@ -1335,7 +1335,8 @@ Básicamente se puede leer como ``las permutaciones de una lista \lstinline$[X|X
 \item Las las soluciones al problema de las N Reinas se calculan con el predicado \lstinline|solucion/2|, que ya fue probado (\ref{sec:pruebasnreinas}). Su definición es:
 \begin{lstlisting}
 solucion(N, Tablero) :- generar(N, Inicial), 
-        permutacion(Inicial, Tablero), tablero_valido(Tablero).
+        permutacion(Inicial, Tablero), 
+        tablero_valido(Tablero).
 \end{lstlisting}
 Es decir ``las soluciones para un dado $N$ son los tableros que son permutaciones de $[1, 2, \cdots, N]$ que son tableros válidos''. Es decir, que ``la magia'' debe de estar en el predicado \lstinline$tablero_valido/2$
 
@@ -1386,12 +1387,6 @@ _________
 La definición de \lstinline$reina_no_choca/2$ es:
 \begin{lstlisting}
 reina_no_choca(Col, Cols) :- reina_no_choca(Col, Cols, 1).
-reina_no_choca(_,[],_).
-reina_no_choca(Col, [Otra_col|Otras_cols], Otra_fila) :-
-        Col =\= Otra_col + Otra_fila, 
-        Col =\= Otra_col - Otra_fila,
-        Otra_fila1 is Otra_fila + 1,
-        reina_no_choca(Col, Otras_cols, Otra_fila1).
 \end{lstlisting}
 
 Es decir que delega todo el trabajo a un predicado \lstinline$reina_no_choca/3$ (distinta aridad):
