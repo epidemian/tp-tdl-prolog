@@ -654,6 +654,8 @@ L = [_G287, _G290, _G293, _G296, _G299, 5|_G303] .
 
 Este último caso resulta interesante. Las soluciones son infinitas\footnote{Pero por suerte SWI Prolog requiere que el usuario vaya apretando \emph{n} para ir calculando cada solución en vez de intentar calcularlas todas.}, y la forma de cada solución es una lista con un 5. La primer solución es una lista de al menos un elemento, un 5; su cola puede ser una lista arbitraria y eso es lo que representa ese nombre poco-feliz. La segunda solución es una lista de al menos dos elementos, el primero de un valor arbitrario y el segundo un 5. Y así sucesivamente\dots
 
+En la sección de análisis del problema de las R Reinas (\ref{sec:analisisnreinas}) se pueden encontrar más ejemplos de algoritmos con listas.
+
 \newpage
 \section{Modelo de Ejecución de Prolog}
 % Ver página 32 y 67 del libro
@@ -1122,34 +1124,36 @@ Esta función devuelve \textit{true} si se cumplen todas las condiciones enumera
 
 El programa ``N Reinas'' calcula todas las soluciones al problema de las $n$ reinas\cite{nreinas}, es decir, cómo posicionar $n$ reinas en un tablero de ajedrez de $n \times n$ de forma tal que no puedan comerse en el siguiente movimiento. El código entero del programa es:
 \begin{lstlisting}
+solucion(N, Tablero) :- generar(N, Inicial), 
+        permutacion(Inicial, Tablero), tablero_valido(Tablero).
+
 generar(0, []).
 generar(N, Sec) :- N > 0, N1 is N - 1, generar(N1, Sec1), 
         append(Sec1, [N], Sec).
-
-reina_no_choca(Col, Cols) :- reina_no_choca(Col, 1, Cols).
-reina_no_choca(_,_,[]).
-reina_no_choca(Col, Fila, [Otra_col|Otras_cols]) :-
-        Diag_1 is Col + Fila, Otra_col =\= Diag_1,
-        Diag_2 is Col - Fila, Otra_col =\= Diag_2,
-        Fila1 is Fila + 1,
-        reina_no_choca(Col, Fila1, Otras_cols).
-
-
-tablero_valido([]).
-tablero_valido([Col|Cols]) :- reina_no_choca(Col, Cols), 
-        tablero_valido(Cols).
 
 permutacion([], []).
 permutacion([X|Xs], Zs) :- permutacion(Xs, Ys), 
         insertar(X, Ys, Zs).
 
+tablero_valido([]).
+tablero_valido([Col|Cols]) :- reina_no_choca(Col, Cols), 
+        tablero_valido(Cols).
+
 insertar(X, Xs, [X|Xs]).
 insertar(X, [Y|Ys], [Y|Zs]) :- insertar(X, Ys, Zs).
 
-solucion(N, Tablero) :- generar(N, Inicial), 
-        permutacion(Inicial, Tablero), tablero_valido(Tablero).
+reina_no_choca(Col, Cols) :- reina_no_choca(Col, Cols, 1).
+reina_no_choca(_,[],_).
+reina_no_choca(Col, [Otra_col|Otras_cols], Otra_fila) :-
+        Col =\= Otra_col + Otra_fila, 
+        Col =\= Otra_col - Otra_fila,
+        Otra_fila1 is Otra_fila + 1,
+        reina_no_choca(Col, Otras_cols, Otra_fila1).
 
 % Codigo para imprimir el tablero.
+imprimir_solucion(N) :- solucion(N, T), 
+        imprimir_tablero(N, T), nl.
+
 imprimir_tablero(_,[]).
 imprimir_tablero(N, [Col|Cols]) :- imprimir_fila(N, Col), nl, 
         imprimir_tablero(N, Cols).
@@ -1160,12 +1164,10 @@ imprimir_fila(N, Col_reina) :- N > 0,
         imprimir_fila(N1, Col_reina1).
 imprimir_casillero(1) :- print('R').
 imprimir_casillero(N) :- N \== 1, print('-').
-
-imprimir_solucion(N) :- solucion(N, T), 
-        imprimir_tablero(N, T), nl.
 \end{lstlisting}
 
 \subsubsection{Pruebas}
+\label{sec:pruebasnreinas}
 
 El predicado más importante del programa es \lstinline|solucion/2|, que verifica si un tablero es solución del problema de las $n$ reinas para un $n$ dado. Por ejemplo:
 \begin{lstlisting}
@@ -1174,25 +1176,25 @@ true .
 \end{lstlisting}
 
 La representación del tablero es una lista de la forma $[r_1, r_2, \cdots, r_n]$ donde cada $r_i$ es el número de columna de la reina en la fila $i$-ésima. El tablero $[3,1,4,2]$, en \emph{ASCII-art} sería:
-\begin{verbatim}
+\begin{Verbatim}[samepage=true]
 _________
 |_|_|R|_|
 |R|_|_|_|
 |_|_|_|R|
 |_|R|_|_|
-\end{verbatim}
+\end{Verbatim}
 
 Que es una de las 2 soluciones al problema de las n reinas para $n=4$.
 
 $[3,1,2,4]$, en cambio, no es slución.
 
-\begin{verbatim}
+\begin{Verbatim}[samepage=true]
 _________
 |_|_|R|_|
 |R|_|_|_|
 |_|R|_|_|
 |_|_|_|R|
-\end{verbatim}
+\end{Verbatim}
 
 \begin{lstlisting}
 ?- solucion(4, [3,1,2,4]).
@@ -1257,43 +1259,186 @@ Si bien Prolog es un lenguaje declarativo, también soporta algunas formas imper
 
 
 \subsubsection{Análisis del Código Fuente}
+\label{sec:analisisnreinas}
 
-\newpage
-\section{Conclusiones}
+Al algoritmo utilizado se basa en el hecho de que, como como no puede haber más de una reina en la misma fila y en la misma columna, las soluciones posibles son permutaciones de la secuencia $1, 2, \cdots , n$.
 
-\newpage
-\appendix
-\section{N Reinas en Python}
-\label{sec:nreinaspython}
-
-Gracias a la expresividad y la grán cantidad de funciones built-in de Python\footnote{\url{http://python.org/}}, se puede programar, en muy pocas lineas de una forma muy directa, una solución al problema de N Reinas, aunque Python no cuente con un motor de inferencia integrado para hacer el backtracking.
-
-\begin{lstlisting}[language=Python]
-from itertools import permutations
-
-def n_reinas(n):
-    return (t for t in permutations(range(n)) if es_solucion(t))
-    
-def es_solucion(t):
-    diags = set(fila + col for fila, col in enumerate(t))
-    diags2 = set(fila - col for fila, col in enumerate(t))
-    return len(diags) == len(diags2) == len(t)
-
-# Imprime todas las soluciones al problema de las N Reinas para N = 8.        
-for t in n_reinas(8):
-    print(t)
+A continuación se explican algunos de los predicados utilizados.
+\begin{itemize}
+\item El predicado \lstinline|generar/2| genera, para un $n$ dado, la secuencia $1, 2, \cdots , n$: 
+\begin{lstlisting}
+?- generar(5, Sec).
+Sec = [1, 2, 3, 4, 5] ;
+false.
 \end{lstlisting}
 
+Está definido como:
+\begin{lstlisting}
+generar(0, []).
+generar(N, Sec) :- N > 0, N1 is N - 1, generar(N1, Sec1), 
+        append(Sec1, [N], Sec).
+\end{lstlisting}
+
+La secuencia generada para un $N > 0$ está definida como la secuencia generada para $N-1$ concatenada con la lista $[N]$ al final.
+
+El predicado \lstinline|append/3| es build-in de Prolog y se encarga de concatenar dos listas:
+\begin{lstlisting}
+?- append([a,b], [c,d,e], L).
+L = [a, b, c, d, e].
+\end{lstlisting}
+
+\item \lstinline|insertar/3| inserta un elemento en una lista en todas las posiciones posibles: 
+\begin{lstlisting}
+?- insertar(a, [b,c,d], L).
+L = [a, b, c, d] ;
+L = [b, a, c, d] ;
+L = [b, c, a, d] ;
+L = [b, c, d, a] ;
+false.
+\end{lstlisting}
+
+Se define como: 
+\begin{lstlisting}
+insertar(X, Xs, [X|Xs]).
+insertar(X, [Y|Ys], [Y|Zs]) :- insertar(X, Ys, Zs).
+\end{lstlisting}
+
+Es una definición interesante. La primer regla dice que el resultado de insertar un elemento \lstinline$X$ en una lista \lstinline$Xs$ es la lista \lstinline$[X|Xs]$, lo cual es lógico\footnote{En la programción lógica, todo esto es lógico :)}. La segunda regla, más interesante, dice que el resultado de agregar un elemento \lstinline$X$ en una lista \emph{no-vacía} de la forma \lstinline$[Y|Ys]$ es la lista \lstinline$[Y|Zs]$ donde \lstinline$Zs$ es el resultado de insertar \lstinline$X$ en \lstinline$Ys$. Es decir, que esa segunda regla es la regla recursiva y a su vez la condición de corte (porque no se cumple cuando se intenta insertar \lstinline$X$ en una lista vacía).
+
+\item \lstinline|permutacion/2| puede verificar si una lista es la permutación de otra:
+\begin{lstlisting}
+?- permutacion([a,b,c], [c,a,b]).
+true .
+\end{lstlisting}
+
+O también, y quizá más interesante, calcular todas las permutaciones de una lista:
+\begin{lstlisting}
+?- permutacion([a,b,c], P).
+P = [a, b, c] ;
+P = [b, a, c] ;
+P = [b, c, a] ;
+P = [a, c, b] ;
+P = [c, a, b] ;
+P = [c, b, a] ;
+false.
+\end{lstlisting}
+
+Su implementación es muy sencilla y está basada en \lstinline|insertar/3|:
+\begin{lstlisting}
+permutacion([], []).
+permutacion([X|Xs], Zs) :- permutacion(Xs, Ys), 
+        insertar(X, Ys, Zs).
+\end{lstlisting}
+
+Básicamente se puede leer como ``las permutaciones de una lista \lstinline$[X|Xs]$ es el resultado de insertar (en todas las posiciones posibles) \lstinline$X$ en las permutaciones de \lstinline$Xs$''.
+
+\item Las las soluciones al problema de las N Reinas se calculan con el predicado \lstinline|solucion/2|, que ya fue probado (\ref{sec:pruebasnreinas}). Su definición es:
+\begin{lstlisting}
+solucion(N, Tablero) :- generar(N, Inicial), 
+        permutacion(Inicial, Tablero), tablero_valido(Tablero).
+\end{lstlisting}
+Es decir ``las soluciones para un dado $N$ son los tableros que son permutaciones de $[1, 2, \cdots, N]$ que son tableros válidos''. Es decir, que ``la magia'' debe de estar en el predicado \lstinline$tablero_valido/2$
+
+\item \lstinline$tablero_valido/2$ verifica si una de las permutaciones de $[1, 2, \cdots, N]$ es válida, y está definido como:
+\begin{lstlisting}
+tablero_valido([]).
+tablero_valido([Col|Cols]) :- reina_no_choca(Col, Cols), 
+        tablero_valido(Cols).
+\end{lstlisting}
+
+Es decir, el tablero vacío es válido, cosa que no es muy interesante; y un tablero no vacío, como:
+\begin{Verbatim}[samepage=true]
+_________
+|_|_|R|_|
+|R|_|_|_|
+|_|_|_|R|
+|_|R|_|_|
+\end{Verbatim}
+
+\dots es válido si la reina en la primer fila no choca con niguna otra y además el tablero (no cuadrado) sin la primer fila:
+\begin{Verbatim}[samepage=true]
+_________
+|R|_|_|_|
+|_|_|_|R|
+|_|R|_|_|
+\end{Verbatim}
+\dots también es válido. Es decir que, evidentemente, la magia debe estar en \lstinline|reina_no_choca/2|
+
+\item \lstinline$reina_no_choca/2$ verifica que una reina en una columna dada no ocupe la misma diagonal que otras reinas, utilizando la propiedad de que dos elementos en las posiciones $(fila_1, col_1)$ y $(fila_2, col_2)$ están en la misma diagonal si $fila_1 + col_1 = fila_2 + col_2 \lor fila_1 - col_1 = fila_2 - col_2$.
+\[
+\begin{array}{c|c c c c}
+  + & 1 & 2 & 3 & 4 \\
+  \hline
+  1 & 2 & 3 & 4 & 5 \\
+  2 & 3 & 4 & 5 & 6 \\
+  3 & 4 & 5 & 6 & 7 \\
+  4 & 5 & 6 & 7 & 8 \\
+\end{array} \qquad \begin{array}{c|c c c c}
+  - & 1 & 2 & 3 & 4 \\
+  \hline
+  1 & 0  & 1  & 2  & 3 \\
+  2 & -1 & 0  & 1  & 2 \\
+  3 & -2 & -1 & 0  & 1 \\
+  4 & -3 & -2 & -1 & 0 \\
+\end{array}
+\]
+
+La definición de \lstinline$reina_no_choca/2$ es:
+\begin{lstlisting}
+reina_no_choca(Col, Cols) :- reina_no_choca(Col, Cols, 1).
+reina_no_choca(_,[],_).
+reina_no_choca(Col, [Otra_col|Otras_cols], Otra_fila) :-
+        Col =\= Otra_col + Otra_fila, 
+        Col =\= Otra_col - Otra_fila,
+        Otra_fila1 is Otra_fila + 1,
+        reina_no_choca(Col, Otras_cols, Otra_fila1).
+\end{lstlisting}
+
+Es decir que delega todo el trabajo a un predicado \lstinline$reina_no_choca/3$ (distinta aridad):
+\begin{lstlisting}
+reina_no_choca(_,[],_).
+reina_no_choca(Col, [Otra_col|Otras_cols], Otra_fila) :-
+        Col =\= Otra_col + Otra_fila, 
+        Col =\= Otra_col - Otra_fila,
+        Otra_fila1 is Otra_fila + 1,
+        reina_no_choca(Col, Otras_cols, Otra_fila1).
+\end{lstlisting}
+Este predicado verifica que una reina en una columna dada \lstinline$Col$ y la fila ``0'' \emph{no} esté en la misma diagonal que alguna otra reina en la columna \lstinline$Otra_col$ y la fila \lstinline$Otra_fila$. Si no choca con esa primera reina, pasa a la siguiente incrementando \lstinline$Otra_fila$ y llamándose recursivamente con el resto de las columnas \lstinline$Otras_cols$.
+
+Es importante notar que la numeración de las filas en este caso es a partir del 0. La reina en la columna \lstinline$Col$ está en la fila 0, por lo cual sus números de diagonales ($col + fila$ y $col - fila$) son ambos \lstinline$Col$. Cuando \lstinline|reina_no_choca/2| llama a \lstinline|reina_no_choca(Col, Cols, 1| indica que las otras reinas comienzan desde la fila 1.
+
+\end{itemize}
+
+Es decir que, a fin de cuentas, ``la magia'' no estaba en ningún predicado en particular, sino que se encuentra repartida de forma más o menos uniforme a lo largo del programa. Cada predicado se encarga de una función bastante puntual y es por eso que resultan en su mayoría muy simples (ninguno tiene más de 3 parámetros). 
+
+El código dedicado a imprimir el tablero no se analizará, pero es interesante mencionar que sólo es posible escribir código procedural en Prolog porque el lenguaje tiene un orden de evaluación estricto. Es decir, se puede saber en qué orden se ejecutarán las cosas, lo cual es básico para escribir sentencias imperativas.
+
+\newpage
+\section{Conclusiones} 
+
+Prolog resulta la elección natural a aprender programación lógica, ya que no sólo fue el precursor, sino que hoy en día sigue siendo el mayor exponente de éste campo. Además, las construcciones del lenguaje, como ya se vió a lo largo del informe, resultan sencillas y la programción interactiva muy amena.
+
+Para el programador avanzado, sin embargo, el lenguaje puede llegar a resultar limitante en algunos aspectos:
+\begin{itemize}
+  \item Al no ser un leguaje de propósito general, hay muchos campos, o casos de problemas, en donde no resulta adecuado utilizarlo. Si bien es muy subjetivo, para algunos algoritmos resulta ``más natural'' expresarlos en algún paradigma en particular. Prolog a veces ``fuerza'' al programador a adaptar un algoritmo a un paradigma para el que no resulta natural.
+  \item Si bien resulta un lenguaje muy expresivo para algunos problemas, comparado con los lenguajes que hacen incapié en la expresividad no es la grán cosa. Por ejemplo, el problema de las N Reinas, que se podría decir que está dentro del campo donde Prolog es ``fuerte'', se puede resolver de una forma muy directa y expresiva en sólo 6 lineas de Python\cite{nreinaspython}.
+  \item La falta de un sistema de módulos hace que sea poco escalable (no hay muchos programas ``grandes'' hechos en Prolog).
+  \item No existe un extandard bien definido del lenguaje, lo cual resulta en incompatibilidades entre las distintas implementaciones.
+\end{itemize}
+
+La manera de razonar que conlleva la programación lógica difiere enormemente de la de la programación imperativa. Entender sus fundamentos y programar pensando en lógica es una tarea sumamente enriquecedora para el programador no iniciado en este paradigma. Razonar los problemas en términos de consecuencias lógicas de los datos ayuda en algunos casos a entenderlos de forma más sencilla que hacerlo pensando en qué pasos seguir para obtener el resultado buscado. Ese mismo razonamiento puede luego ser traducido y expresado en cualquier lenguaje que se utilize, no necesariamente del paradigma lógico.
+
 \clearpage
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
     \bibitem{artofprolog} Leon Sterling \& Ehud Shapiro, \emph{The Art of Prolog: Advanced Programming Techniques}. The MIT Press, 2nd Edition, 1999.
-    \bibitem{vonneumann} \emph{Von Neumann Architecture}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Von\_Neumann\_architecture}
-    \bibitem{wiki} \emph{Prolog}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Prolog}
-    \bibitem{clausula} \emph{Clause (logic)}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Clause_(logic)}
-    \bibitem{horn_clauses} \emph{Horn Clauses}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Horn_clauses}
+    \bibitem{vonneumann} \emph{Von Neumann Architecture}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Von\_Neumann\_architecture}.
+    \bibitem{wiki} \emph{Prolog}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Prolog}.
+    \bibitem{clausula} \emph{Clause (logic)}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Clause_(logic)}.
+    \bibitem{horn_clauses} \emph{Horn Clauses}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Horn_clauses}.
     \bibitem{kowalski} Robert Kowalski, \emph{Predicate Logic as Programming Language}. IEEE Computer Society Press, 1986.
-    \bibitem{hist1} \emph{Historia de Prolog}, \url{http://prolog6.tripod.com/historia.htm}
-    \bibitem{nreinas} \emph{Eight queens puzzle}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Eight_queens_puzzle}
+    \bibitem{hist1} \emph{Historia de Prolog}, \url{http://prolog6.tripod.com/historia.htm}.
+    \bibitem{nreinas} \emph{Eight queens puzzle}, artículo en Wikipedia: \url{http://en.wikipedia.org/wiki/Eight_queens_puzzle}.
+    \bibitem{nreinaspython} Resolución del problema de las N Reinas en Python: \url{http://code.activestate.com/recipes/576647-eight-queens-six-lines/}.
 \end{thebibliography} 
 
 % ------------------------------ Fin del tp -------------------------------
