@@ -876,7 +876,7 @@ Se resuelve con el siguiente árbol de derivación:
                          false
 \end{Verbatim}
 
-Puede observarse que, por más que la query se verifique con \lstinline|pertenece(2,[2,3])| por el primer hecho, el algoritmo de backtracking sigue ejecutándose, pues \lstinline|pertenece(2,[2,3])| también unifica con la cabecera de la segunda regla \lstinline$pertenece(X,[_|Xs])$. Y es por ello el resultado de la query termina con un \lstinline|false|. Eso quiere decir que si hay varias apariciones del elemento en la lista, la query devolverá varios \lstinline|true|s;
+Puede observarse que, por más que la query se verifique con \lstinline|pertenece(2,[2,3])| por el primer hecho, el algoritmo de backtracking sigue ejecutándose, pues \lstinline|pertenece(2,[2,3])| también unifica con el encabezado de la segunda regla \lstinline$pertenece(X,[_|Xs])$. Y es por ello el resultado de la query termina con un \lstinline|false|. Eso quiere decir que si hay varias apariciones del elemento en la lista, la query devolverá varios \lstinline|true|s;
 \begin{lstlisting}
 ?- pertenece(2,[2,1,2,3,2]).
 true ;
