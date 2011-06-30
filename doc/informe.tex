@@ -191,7 +191,7 @@ El paradigma de la programación lógica surge de la necesidad de los programado
 
 Si bien el propósito de las computadoras es ser usadas por personas, la dificultad de su construcción fue tan grande que los lenguajes utilizados para expresar los problemas que estas debían resolver fueron diseñados desde la perspectiva del funcionamiento de la computadora en sí.
 
-Las computadoras modernas están basadas en la arquitectura de von Neumann \cite{vonneumann}, el la cual un programa consiste en una serie de instrucciones que operan sobre registros y que se ejecutan una tras otra, pudiendo la ejecución de una instrucción influir en qué ejecución se ejecute a continuación.
+Las computadoras modernas están basadas en la arquitectura de von Neumann \cite{vonneumann}, en el la cual un programa consiste en una serie de instrucciones que operan sobre registros y que se ejecutan una tras otra, pudiendo la ejecución de una instrucción influir en qué instrucción se ejecute a continuación.
 
 A medida que los programas se hicieron más complejos, se necesitó más esfuerzo para traducir los conceptos que se querían modelar a un lenguaje que las computadoras pudieran interpretar, es decir \emph{programar} se volvió más complejo. Para aliviar este problema se crearon lenguajes con mayor poder de abstracción, capaces de expresar las ideas del programador de forma más directa. Partiendo desde el lenguaje ensamblador, y pasando por C, Pascal, Java y muchos otros, todos estos lenguajes son derivados de la arquitectura de von Neumann, y por lo tanto comparten el mismo modelo subyacente de ejecución. Este paradigma de programción es el que se conoce como la \emph{programación imperativa}.
 
@@ -201,7 +201,7 @@ Si bien la lógica se usó como una herramienta para diseñar computadoras y pro
 
 La programación lógica, así como la programción funcional, perteneca al paradigma de la programción declarativa, y difiere enormemente de la programación imperativa. En vez estar basada en el modelo de von Neumann, la programación declarativa se basa en un modelo abstracto que no guarda ninguna relación con el modelo de la máquina. 
 
-Así, el programador, en vez de tener que adaptar sus ideas a un modelo que se diseñó para una arquitectura de computadora en un momento dado, puede expresarlas sobre un modelo diseñado para ese fín, sin tener que preocuparse por la forma en que luego la computadora ejecutará estas acciones. 
+Así, el programador, en vez de tener que adaptar sus ideas a un modelo que se diseñó para una arquitectura de computadora en un momento dado, puede expresarlas sobre un modelo diseñado para declarar conceptos, sin tener que preocuparse por la forma en que luego la computadora ejecutará estas acciones. 
 
 Es decir, un programa en un lenguaje declarativo describe \emph{qué} debe realizarse y no \emph{cómo} debe realizarse.
 
@@ -256,7 +256,7 @@ Lo cual se puede reescribir como una implicación lógica equivalentemente:
 (b_1 \land \cdots \land b_n) \rightarrow h
 \end{equation}
 
-La programación lógica tiene sus bases en las cláusulas de Horn gracias a su interpretación procedural formulada por Robert Kowalski, quien demostró que una clásula de Horn como \eqref{eq:horn} puede resolverse proceduramente \cite{kowalski} planteando $h$ como el encabezado (\emph{head}) de un procedimiento y $b_1 \land \cdots \land b_n$ como su cuerpo (\emph{body}). Lo cual puede leerse proceduralmente como: \emph{para resolver (ejecutar) $h$, resolver (ejecutar) $b_1$ y $b_2$ y $\cdots$ y $b_n$}. 
+La programación lógica tiene sus bases en las cláusulas de Horn gracias a su interpretación procedural formulada por Robert Kowalski, quien demostró que una clásula de Horn como \eqref{eq:horn} puede resolverse proceduralmente \cite{kowalski} planteando $h$ como el encabezado (\emph{head}) de un procedimiento y $b_1 \land \cdots \land b_n$ como su cuerpo (\emph{body}). Lo cual puede leerse proceduralmente como: \emph{para resolver (ejecutar) $h$, resolver (ejecutar) $b_1$ y $b_2$ y $\cdots$ y $b_n$}. 
 
 Para remarcar esta relación entre el encabezado de la cláusula y su cuerpo, en la programación lógica suele utilizarse el operador de consecuencia lógica, cuya notación resulta más similiar a la de una \emph{regla} de Prolog (ver sección \ref{sec:reglas}):
 \begin{equation*} 
@@ -393,7 +393,7 @@ Es decir ``existe $X$ tal que $X$ es padre de Poseidon y $X$ es padre de Hades''
 
 Incluso puede utilizarse más de una variable en una query. Por ejemplo, para conocer todos los hermanos en la base de datos:
 \begin{lstlisting}[label=lst:queryhermanos]
-% El \== el operador 'distinto'
+% El \== es el operador 'distinto'
 ?- padre(X, A), padre(X, B), A \== B.
 X = cronos,
 A = hades,
@@ -606,9 +606,9 @@ X = 5.
 
 ``Existe algún $X$ tal que $X$ pertenece a $[3,4,5,6]$ y no pertenece a $[1,2,3,4]$'':
 \begin{lstlisting}
-?- pertenece(X, [3,4,5,6]), pertenece(X, [1,2,3,4]).
-X = 3 ;
-X = 4.
+?- pertenece(X, [3,4,5,6]), not(pertenece(X, [1,2,3,4])).
+X = 5 ;
+X = 6.
 \end{lstlisting}
 
 ``Existen algunos $X$ e $Y$ tales que $X$ pertenece a $[1,2,3]$ e $Y$ pertenece a $[10,20]$'':
@@ -672,7 +672,7 @@ Un objetivo es un predicado que se quiere verificar, es decir, para el que se qu
 
 \subsection{Ejemplos}
 
-La forma más sencilla de entender cómo Prolog resulve las consultas es mediante ejemplos de ejecuciones. Se estudiarán los \emph{árboles de derivación} de distintas ejecuciones y se analizará el arloritmo de \emph{backtracking}.
+La forma más sencilla de entender cómo Prolog resulve las consultas es mediante ejemplos de ejecuciones. Se estudiarán los \emph{árboles de derivación} de distintas ejecuciones y se analizará el algoritmo de \emph{backtracking}.
 
 Para ejemplificar cómo Prolog resuelve las queries, se volverá a recurrir al programa de los dioses griegos. El programa completo que se utilizará en esta sección es:
 \begin{lstlisting}
@@ -839,7 +839,7 @@ padre(artemisa,X)  hijo(artemisa,X)      hermano(artemisa,X)
                           true
 \end{Verbatim}
 
-Si los argumentos en la consulta se darían vuelta
+Si los argumentos en la consulta se diesen vuelta
 \begin{lstlisting}
 ?- familiar_cercano(X, artemisa).
 X = zeus ;
@@ -947,7 +947,7 @@ n!=\left\{
 \right.
 \]
 
-Su taducción a Prolog resulta bastante sencilla:
+Su traducción a Prolog resulta bastante sencilla:
 \begin{lstlisting}
 factorial(0, 1).
 factorial(N, F) :- N > 0, N1 is N - 1, 
